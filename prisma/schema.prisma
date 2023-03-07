@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+enum Role {
+    ADMIN
+    MODERATOR
+    USER
+}
+model User {
+  id            Int @id @default(autoincrement())
+  name          String
+  password      String    
+  email         String @unique
+  english       Word[] @relation("english")
+  russian       Word[] @relation("russian")
+  spelling      Word[] @relation("spelling")
+  auding        Word[] @relation("auding")
+  role          Role
+  accessLevel   Int
+  @@map(name: "users")
+}
+model Word{
+  id            Int @id @default(autoincrement())
+  eng           String @unique
+  rus           String @unique
+  english       User[] @relation("english") 
+  russian       User[] @relation("russian")   
+  spelling      User[] @relation("spelling")
+  auding        User[] @relation("auding")  
+  group_ids     Group[]
+  visible       Boolean @default(true)
+}
+model Group{
+  id            Int @id @default(autoincrement())
+  eng           String @unique
+  rus           String @unique
+  word_ids      Word[]
+  text          Text?
+  visible       Boolean @default(true)
+}
+model Text{
+  id            Int @id @default(autoincrement())
+  eng           String @unique
+  rus           String @unique
+  text          String
+  group         Group @relation(fields: [group_id], references: [id])
+  group_id      Int @unique
+  visible       Boolean @default(true)
+}
