@@ -21,13 +21,16 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         }
         if(req.method === "POST"){
             const { eng, rus, group_ids } = JSON.parse(req.body)
-            if(!eng || !rus){
-                throw new Error(eng)
+            if(!eng || !rus || !group_ids){
+                throw new Error(NOT_ALL_DATA_PROVIDED)
             }
             const data = await prisma.word.create({
                 data: {
                     eng: eng,
                     rus: rus,
+                    group_ids: {
+                        connect: group_ids.map(el => ({id: el}))
+                    }
                 }
             })
             return res.status(200).json(data);
