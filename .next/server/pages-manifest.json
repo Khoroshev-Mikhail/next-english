@@ -2,7 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
   "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/api/words": "pages/api/words.js"
+  "/api/admin/words/[id]": "pages/api/admin/words/[id].js",
+  "/admin/words/[id]": "pages/admin/words/[id].js",
+  "/api/admin/groups": "pages/api/admin/groups.js"
 }

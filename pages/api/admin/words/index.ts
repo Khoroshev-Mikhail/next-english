@@ -11,12 +11,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             throw new Error(ACCESS_IS_DENIED)
         }
         if(req.method === "GET"){
-            const data = await prisma.word.findMany({
-                // include: {
-                //     group_ids: true
-                // }
-                // Подумай над этим. Это для редактирования групп слов
-            })
+            const data = await prisma.word.findMany()
             return res.status(200).json(data);
         }
         if(req.method === "POST"){
@@ -29,7 +24,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     eng: eng,
                     rus: rus,
                     group_ids: {
-                        connect: group_ids.map(el => ({id: el}))
+                        connect: group_ids.map((el: number) => ({id: el}))
                     }
                 }
             })

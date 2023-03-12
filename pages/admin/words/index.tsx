@@ -21,7 +21,7 @@ export default function Main(){
                         <div className='col-span-1'>{el.id}</div>
                         <div className='col-span-5'>{el.eng}</div>
                         <div className='col-span-5'>{el.rus}</div>
-                        <div className='col-span-1'><Link href={`/admin/words/edit/${el.id}`}>Edit</Link></div>
+                        <div className='col-span-1'><Link href={`/admin/words/${el.id}`}>Edit</Link></div>
                     </div>
                 )
             })}
