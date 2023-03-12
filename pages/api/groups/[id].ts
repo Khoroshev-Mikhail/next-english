@@ -5,7 +5,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
     try{
         const { id } = req.query
         if(req.method === "GET"){
-            const data = await prisma.group.findMany({
+            const data = await prisma.group.findUnique({
                 where: {
                     id: Number(id)
                 }

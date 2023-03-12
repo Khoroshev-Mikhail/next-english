@@ -6,7 +6,7 @@ import useSWR from 'swr'
 import { Group, Word } from '@prisma/client'
 import { useRouter } from 'next/router'
 
-export default function Main(){
+export default function Admin_word(){
     const router = useRouter()
     const { id } = router.query
 
@@ -72,4 +72,4 @@ export default function Main(){
         </>
     )
 }
-Main.admin = true
+Admin_word.admin = true

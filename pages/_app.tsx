@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import 'tailwindcss/tailwind.css'
 import { SWRConfig } from "swr/_internal";
 import { SessionProvider, useSession } from "next-auth/react"
-import Layout from 'components/Layout';
+import Layout from 'components/layout/Layout';
 
 const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   return (
