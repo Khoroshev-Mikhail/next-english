@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             return res.status(200).json(data);
         }
         if(req.method === "PUT"){
-            const { eng, rus, group_ids } = JSON.parse(req.body)
+            const { eng, rus, group_ids } : { eng: string, rus: string, group_ids: number[] } = JSON.parse(req.body)
             if(!eng || !rus || !group_ids){
                 throw new Error(NOT_ALL_DATA_PROVIDED)
             }
@@ -40,8 +40,8 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     eng: eng ? String(eng) : undefined,
                     rus: rus ? String(rus) : undefined,
                     group_ids: {
-                        // connect: group_ids.map((el: number) => ({id: el}))
-                        connect: [null]
+                        connect: group_ids.length > 0 ? group_ids.map(el => ({ id: +el })) : undefined,
+                        set: group_ids.length === 0 ? [] : undefined
                     }
                 } 
             })

@@ -1,3 +1,4 @@
+import { NOT_ALL_DATA_PROVIDED } from 'lib/errors';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import prisma from '../../../../lib/prisma';
@@ -15,12 +16,22 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             const data = await prisma.group.findUnique({
                 where: {
                     id: Number(id)  
+                },
+                include: {
+                    word_ids: {
+                        select: {
+                            id: true
+                        }
+                    }
                 }
             })
             return res.status(200).json(data);
         }
         if(req.method === "PUT"){
-            const { eng, rus, group_ids } = JSON.parse(req.body)
+            const { eng, rus, word_ids } : { eng: string, rus: string, word_ids: number[] } = JSON.parse(req.body)
+            if(!eng || !rus || !word_ids){
+                throw new Error(NOT_ALL_DATA_PROVIDED)
+            }
             const data = await prisma.group.update({
                 where: {
                     id: Number(id)
@@ -28,6 +39,10 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                 data: {
                     eng: eng ? String(eng) : undefined,
                     rus: rus ? String(rus) : undefined,
+                    word_ids: {
+                        connect: word_ids.length > 0 ? word_ids.map(el => ({ id: +el })) : undefined,
+                        set: word_ids.length === 0 ? [] : undefined
+                    }
                 } 
             })
             return res.status(200).json(data);
