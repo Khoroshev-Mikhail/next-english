@@ -8,7 +8,7 @@ export default function Header(){
                 <Link href="/groups" className="relative text-white text-lg no-underline font-medium ml-10">Слова</Link>
                 <Link href="#" className="relative text-white text-lg no-underline font-medium ml-10">Тексты</Link>
                 <Link href="#" className="relative text-white text-lg no-underline font-medium ml-10">Грамматика</Link>
-                <Link href="#" className="relative text-white text-lg no-underline font-medium ml-10">Профиль</Link>
+                <Link href="/user" className="relative text-white text-lg no-underline font-medium ml-10">Профиль</Link>
                 <button className="w-32 h-12 bg-transparent border-solid border-2 rounded-md outline-none ml-10">Login</button>
             </nav>
         </header>
