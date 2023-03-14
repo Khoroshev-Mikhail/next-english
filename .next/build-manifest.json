@@ -25,10 +25,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/admin/words": [
+    "/groups/[id]/english": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/admin/words.js"
+      "static/chunks/pages/groups/[id]/english.js"
     ]
   },
   "ampFirstPages": []

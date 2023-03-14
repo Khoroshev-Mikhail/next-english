@@ -8,7 +8,8 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   return (
     <SessionProvider session={session}>
         <SWRConfig value={{
-          // refreshInterval: 3000,
+          keepPreviousData: true,
+          // revalidateOnFocus: false,
           fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
         }}>
             <Layout>

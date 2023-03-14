@@ -1,5 +1,4 @@
 export async function createFetch(url, {arg}) {
-    console.log(arg)
     await fetch(url, {
         method: 'POST',
         body: JSON.stringify(arg)

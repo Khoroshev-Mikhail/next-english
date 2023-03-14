@@ -81,7 +81,7 @@ model Group{
   id            Int @id @default(autoincrement())
   eng           String @unique
   rus           String @unique
-  word_ids      Word[]
+  words         Word[]
   text_id       Text?
   visible       Boolean @default(true)
 }
