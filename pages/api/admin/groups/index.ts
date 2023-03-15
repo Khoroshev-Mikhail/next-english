@@ -11,7 +11,15 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             throw new Error(ACCESS_IS_DENIED)
         }
         if(req.method === "GET"){
-            const data = await prisma.group.findMany()
+            const data = await prisma.group.findMany({
+                include: {
+                    word_ids: {
+                        select: {
+                            id: true
+                        }
+                    }
+                }
+            })
             return res.status(200).json(data);
         }
         if(req.method === "POST"){

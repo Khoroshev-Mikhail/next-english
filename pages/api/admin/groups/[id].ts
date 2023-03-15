@@ -40,7 +40,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     eng: eng ? String(eng) : undefined,
                     rus: rus ? String(rus) : undefined,
                     word_ids: {
-                        connect: word_ids.length > 0 ? word_ids.map(el => ({ id: +el })) : undefined,
+                        connect: word_ids.length !== 0 ? word_ids.map(el => ({ id: +el })) : undefined,
                         set: word_ids.length === 0 ? [] : undefined
                     }
                 } 

@@ -11,8 +11,8 @@ export default function Header(){
             <h1 className="text-4xl font-extrabold  select-none"><Image src={logo.src} width={50} height={40} alt='logo'/></h1>
             <nav>
                 <Link href="/groups" className="relative  text-lg no-underline font-medium ml-10 mylink">Слова</Link>
-                <Link href="#" className="relative  text-lg no-underline font-medium ml-10 mylink">Тексты</Link>
-                <Link href="#" className="relative  text-lg no-underline font-medium ml-10 mylink">Грамматика</Link>
+                {/* <Link href="#" className="relative  text-lg no-underline font-medium ml-10 mylink">Тексты</Link>
+                <Link href="#" className="relative  text-lg no-underline font-medium ml-10 mylink">Грамматика</Link> */}
                 <Link href="/user" className="relative  text-lg no-underline font-medium ml-10 mylink">Профиль</Link>
                 <Button text={'Login'} fn={signIn}/>
             </nav>

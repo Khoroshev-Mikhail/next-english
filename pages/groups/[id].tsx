@@ -1,7 +1,6 @@
 import { Group } from '@prisma/client'
 import Method_card from 'components/groups/Method_card'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 import useSWR from 'swr'
 
 export default function Group_Page(){
@@ -9,7 +8,6 @@ export default function Group_Page(){
     const { id } = router.query
 
     const {data, error, isLoading} = useSWR<Group>(id ? `/api/groups/${id}` : null)
-
     return(
         <div className="grid grid-cols-12 gap-4 p-4 rounded-lg">
             <div className='col-span-12'>

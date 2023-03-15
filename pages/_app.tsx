@@ -9,7 +9,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
     <SessionProvider session={session}>
         <SWRConfig value={{
           keepPreviousData: true,
-          // revalidateOnFocus: false,
+          revalidateOnFocus: false,
           fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
         }}>
             <Layout>

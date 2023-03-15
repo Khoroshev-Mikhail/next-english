@@ -12,18 +12,16 @@ export default function CreateGroup(){
         trigger({eng, rus})
     }
     return(
-        <>
-            <div className="grid grid-cols-12">
-                <div className='col-span-5'>Eng</div>
-                <div className='col-span-5'>Rus</div>
-                <div className='col-span-2'></div>
-            </div>
-            <div className="grid grid-cols-12">
+        <div className='p-4 border-2 rounded-lg mb-4'>
+            <h4 className='mb-2'>Создать новую группу слов</h4>
+            <div className="grid grid-cols-12 gap-x-4">
                 <div className='col-span-5'>
-                    <TextInput value={eng} onChange={( { target: {value} }) => setEng(value)}/>
+                    {/* <Label htmlFor='eng'>Eng</Label> */}
+                    <TextInput id='eng' value={eng} onChange={( { target: {value} }) => setEng(value)} placeholder="English"/>
                 </div>
                 <div className='col-span-5'>
-                    <TextInput value={rus} onChange={( { target: {value} }) => setRus(value)}/>
+                    {/* <Label htmlFor='rus'>Rus</Label> */}
+                    <TextInput id='rus' value={rus} onChange={( { target: {value} }) => setRus(value)} placeholder="Русский"/>
                 </div>
                 <div className='col-span-2'>
                     <Button onClick={handler}>
@@ -31,7 +29,7 @@ export default function CreateGroup(){
                     </Button>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 CreateGroup.admin = true

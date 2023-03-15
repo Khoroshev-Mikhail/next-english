@@ -15,6 +15,9 @@ export default function CreateWord(){
 
     function handler(){
         trigger({eng, rus, group_ids})
+        setEng('')
+        setRus('')
+        setGroup_ids([])
     }
     function handlerGroup_ids(i){
         if(group_ids.includes(i)){
@@ -24,18 +27,16 @@ export default function CreateWord(){
         }
     }
     return(
-        <>
-            <div className="grid grid-cols-12">
-                <div className='col-span-5'>Eng</div>
-                <div className='col-span-5'>Rus</div>
-                <div className='col-span-2'></div>
-            </div>
-            <div className="grid grid-cols-12">
+        <div className='p-4 border-2 rounded-lg mb-4'>
+            <h4 className='mb-2'>Создать новое слово</h4>
+            <div className="grid grid-cols-12 gap-x-4">
                 <div className='col-span-5'>
-                    <TextInput value={eng} onChange={( { target: {value} }) => setEng(value)}/>
+                    {/* <Label htmlFor='eng'>Eng</Label> */}
+                    <TextInput id='eng' value={eng} onChange={( { target: {value} }) => setEng(value)} placeholder="English"/>
                 </div>
                 <div className='col-span-5'>
-                    <TextInput value={rus} onChange={( { target: {value} }) => setRus(value)}/>
+                    {/* <Label htmlFor='rus'>Rus</Label> */}
+                    <TextInput id='rus' value={rus} onChange={( { target: {value} }) => setRus(value)} placeholder="Русский"/>
                 </div>
                 <div className='col-span-2'>
                     <Button onClick={handler}>
@@ -43,17 +44,18 @@ export default function CreateWord(){
                     </Button>
                 </div>
             </div>
-            <div className="grid grid-cols-12">
+            <h4 className='mt-4 mb-2'>Включить его в группы</h4>
+            <div className="grid grid-cols-12 border border-gray-200 rounded-lg py-4 gap-4">
                 {isLoading && <Spinner size='xl' />}
                 {!isLoading && groups && groups.map((el, i) => {
                     return (
-                        <div className='col-span-12' key={i}>
+                        <div className='col-span-3 pl-4' key={i}>
                             <Checkbox id={String(el.id)} value={el.id} onChange={({ target: {value} }) => handlerGroup_ids(value)}/>
-                            <Label htmlFor={String(el.id)}> {el.eng} - {el.rus}</Label>
+                            <Label htmlFor={String(el.id)}> {el.eng} / {el.rus}</Label>
                         </div>
                     )
                 })}
             </div>
-        </>
+        </div>
     )
 }
