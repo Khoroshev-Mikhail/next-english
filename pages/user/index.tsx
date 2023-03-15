@@ -11,8 +11,14 @@ export default function UserPage(){
     //Расширь type User правильно 
     const { data, error, isLoading } = useSWR<{ name: string, email: string }>(session?.user?.id ? `/api/user/${session.user.id}` : null)
     const { data: vocabulary} = useSWR<Vocabulary_Word[]>(session?.user?.id ? `/api/user/${session.user.id}/vocabulary` : null)
-    
     const [ comparator, setComparator ] = useState<{fn: any, increase: boolean}>({fn: sortWordById, increase: true})
+
+    const sorted = vocabulary
+        ? comparator.increase 
+            ? vocabulary.sort(comparator.fn)
+            : vocabulary.sort(comparator.fn).reverse()
+        : []
+
     function toggleComparator(currentComparator: any){
         setComparator(({fn, increase}) => {
             return {
@@ -21,6 +27,7 @@ export default function UserPage(){
             };
         })
     }
+    console.log(sorted)
     return(
         <div className="grid grid-cols-12 gap-4 bg-white/30 p-4 backdrop-blur-lg rounded-lg border-2">
             <div className='col-span-2'>Имя</div> <div className='col-span-10'>{data?.name}</div>
@@ -34,7 +41,7 @@ export default function UserPage(){
                 <div className='col-span-1 text-center'>Russian</div>
                 <div className='col-span-1 text-center'>Spelling</div>
                 <div className='col-span-1 text-center'>Auding</div>
-                {vocabulary?.map((el, i) => {
+                {sorted.map((el, i) => {
                     return <Vocabulary_row {...el} key={i} />
                 })
                 }

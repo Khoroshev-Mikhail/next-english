@@ -8,7 +8,6 @@ import { authOptions } from '../../../auth/[...nextauth]';
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
     try{
         const { id } = req.query
-
         if(req.method === "GET"){
             const { english, russian, auding, spelling } = await prisma.user.findUnique({
                 where: {
@@ -48,14 +47,14 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             //Рефакторинг
             const result = []
             english.forEach(word => { //(О)n
-                result.push({...word, english: true})
+                result.push({...word, english: true, russian: false, spelling: false, auding: false})
             })
             russian.forEach(word => { //(О)1/2n^2
                 const i = result.findIndex(el => el.id === word.id)
                 if(i > -1){
                     result[i] = {...result[i], russian: true}
                 }else{
-                    result.push({...word, russian: true})
+                    result.push({...word, english: false, russian: true, spelling: false, auding: false })
                 }
             })
             auding.forEach(word => { //(О)1/2n^2
@@ -63,7 +62,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                 if(i > -1){
                     result[i] = {...result[i], auding: true}
                 }else{
-                    result.push({...word, auding: true})
+                    result.push({...word,  english: false, russian: false, spelling: false, auding: true })
                 }
             })
             spelling.forEach(word => { //(О)1/2n^2
@@ -71,7 +70,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                 if(i > -1){
                     result[i] = {...result[i], spelling: true}
                 }else{
-                    result.push({...word, spelling: true})
+                    result.push({...word,  english: false, russian: false, spelling: true, auding: false })
                 }
             })
             // (О)1/2n^2*3 + //(О)n = (О)3/2n^2 + (O)n

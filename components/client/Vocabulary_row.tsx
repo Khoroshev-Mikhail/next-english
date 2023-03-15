@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import useSWRMutation from 'swr/mutation'
 
-export default function Vocabulary_row(props: Vocabulary_Word){
+export default function Vocabulary_row(props: Vocabulary_Word ){
     const { data: session } = useSession()
     const [ english, setEnglish ] = useState<boolean>(props.english)
     const [ russian, setRussian] = useState<boolean>(props.russian)
@@ -22,11 +22,19 @@ export default function Vocabulary_row(props: Vocabulary_Word){
         setAuding(props.auding)
     },[ props ])
 
-    function set(method: MethodLearn, word_id: number){
-        triggerSet({ method, word_id})
+    async function set(method: MethodLearn, word_id: number){
+        if(method === ENGLISH) setEnglish(true)
+        if(method === RUSSIAN) setRussian(true)
+        if(method === SPELLING) setSpelling(true)
+        if(method === AUDING) setAuding(true)
+        await triggerSet({ method, word_id})
     }
-    function del(method: MethodLearn, word_id: number){
-        triggerDel({ method, word_id})
+    async function del(method: MethodLearn, word_id: number){
+        if(method === ENGLISH) setEnglish(false)
+        if(method === RUSSIAN) setRussian(false)
+        if(method === SPELLING) setSpelling(false)
+        if(method === AUDING) setAuding(false)
+        await triggerDel({ method, word_id})
     }
     return(
         <>
@@ -37,16 +45,16 @@ export default function Vocabulary_row(props: Vocabulary_Word){
                 {props.rus}
             </div>
             <div className='col-span-1 text-center'>
-                <Checkbox checked={english} onChange={()=> english ? del(ENGLISH, props.id) : set(ENGLISH, props.id)}/>
+                <Checkbox value={props.id} checked={english} onChange={(e)=> english ? del(ENGLISH, +e.target.value) : set(ENGLISH, props.id)}/>
             </div>
             <div className='col-span-1 text-center'>
-                <Checkbox checked={russian} onChange={()=> russian ? del(RUSSIAN, props.id) : set(RUSSIAN, props.id)}/>     
+                <Checkbox value={props.id} checked={russian} onChange={(e)=> russian ? del(RUSSIAN, +e.target.value) : set(RUSSIAN, props.id)}/>     
             </div>
             <div className='col-span-1 text-center'>
-                <Checkbox checked={spelling} onChange={()=> spelling ? del(SPELLING, props.id) : set(SPELLING, props.id)}/>
+                <Checkbox value={props.id} onChange={(e)=> spelling ? del(SPELLING, +e.target.value) : set(SPELLING, props.id)}/>
             </div>
             <div className='col-span-1 text-center'>
-                <Checkbox checked={auding} onChange={()=> auding ? del(AUDING, props.id) : set(AUDING, props.id)}/>
+                <Checkbox value={props.id} onChange={(e)=> auding ? del(AUDING, +e.target.value) : set(AUDING, props.id)}/>
             </div>
         </>
     )
