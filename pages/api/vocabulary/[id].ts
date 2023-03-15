@@ -16,12 +16,39 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     id: String(id)  
                 },
                 select: {
-                    english: true,
+                    english: {
+                        select: {
+                            id: true,
+                            eng: true,
+                            rus: true
+                        }
+                    },
                     russian: true,
                     auding: true,
                     spelling: true
                 }
             })
+            // english.forEach(word => {
+            //     result.push({...word, english: true})
+            // })
+            // russian.forEach(word => {
+            //     if(!result.some(el => el.id === word.id)){
+            //         result.push({...word, russian: true})
+            //     }
+                
+            // })
+            // auding.forEach(word => {
+            //     if(!result.some(el => el.id === word.id)){
+            //         result.push({...word, russian: true})
+            //     }
+                
+            // })
+            // spelling.forEach(word => {
+            //     if(!result.some(el => el.id === word.id)){
+            //         result.push({...word, russian: true})
+            //     }
+                
+            // })
             return res.status(200).json(data);
         }
 

@@ -6,6 +6,27 @@ export const NON_EXISTENT_METHOD = 'Не существующий метод.'
 export const WITHOUT_ID = 'Не указан id.'
 
 
-//Константы и типизация
-export const METHODS: MethodLearn[] = ['ENGLISH', 'RUSSIAN', 'AUDING', 'SPELLING']
+//Константы
+export const ENGLISH = 'ENGLISH'
+export const RUSSIAN = 'RUSSIAN'
+export const SPELLING = 'SPELLING'
+export const AUDING = 'AUDING'
+export const METHODS: MethodLearn[] = [ENGLISH, RUSSIAN, SPELLING, AUDING]
+
+//Типы
 export type MethodLearn = 'ENGLISH' | 'RUSSIAN' | 'AUDING' | 'SPELLING'
+export type Vocabulary = {
+    english: number[]
+    russian: number[]
+    auding: number[]
+    spelling: number[]
+}
+export type Vocabulary_Word = { 
+    id: number 
+    eng: string
+    rus: string 
+    english: boolean
+    russian: boolean
+    spelling: boolean
+    auding: boolean
+}

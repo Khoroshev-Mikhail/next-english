@@ -7,7 +7,7 @@ export default function Groups(){
     return(
         <div className="grid grid-cols-12 gap-4 px-2">
             {data?.map((el, i) =>{
-                return <Group_card {...el} />
+                return <Group_card {...el} key={i}/>
             })}
         </div>
     )

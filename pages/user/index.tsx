@@ -1,26 +1,44 @@
-import { User, Word } from '@prisma/client'
-import { Button } from 'flowbite-react'
-import { updateFetch } from 'lib/fetchesCRUD'
+import Vocabulary_row from 'components/client/Vocabulary_row'
+import { sortWordByEng, sortWordById, sortWordByRus } from 'lib/compartators'
+import { Vocabulary,  Vocabulary_Word, } from 'lib/errors'
 import { useSession } from 'next-auth/react'
+import { useState } from 'react'
 import useSWR from 'swr'
-import useSWRMutation from 'swr/mutation'
+
 
 export default function UserPage(){
     const { data: session } = useSession()
     //Расширь type User правильно 
-    const {data, error, isLoading} = useSWR<User & { english: Word[], russian: Word[], spelling: Word[], auding: Word[] } >(session?.user?.id ? `/api/user/${session.user.id}` : null)
-    const { trigger } = useSWRMutation(session?.user?.id ? `/api/vocabulary/${session.user.id}` : null, updateFetch)
-    console.log(data)
+    const { data, error, isLoading } = useSWR<{ name: string, email: string }>(session?.user?.id ? `/api/user/${session.user.id}` : null)
+    const { data: vocabulary} = useSWR<Vocabulary_Word[]>(session?.user?.id ? `/api/user/${session.user.id}/vocabulary` : null)
+    
+    const [ comparator, setComparator ] = useState<{fn: any, increase: boolean}>({fn: sortWordById, increase: true})
+    function toggleComparator(currentComparator: any){
+        setComparator(({fn, increase}) => {
+            return {
+                fn: currentComparator,
+                increase: fn === currentComparator ? !increase : true
+            };
+        })
+    }
     return(
         <div className="grid grid-cols-12 gap-4 bg-white/30 p-4 backdrop-blur-lg rounded-lg border-2">
             <div className='col-span-2'>Имя</div> <div className='col-span-10'>{data?.name}</div>
             <div className='col-span-2'>Email</div> <div className='col-span-10'>{data?.email}</div>
-            <div>
-                {data?.english.map((el, i) => {
-                    return <div key={i}>{el.eng}</div>
-                })}
+            <div className="col-span-12 grid grid-cols-12 border-b-2 pb-4 ">
+                <div className='col-span-8'></div>
+                <div className='col-span-4 text-center'>Методы изучения слов</div>
+                <div className='col-span-4 cursor-pointer' onClick={()=>toggleComparator(sortWordByEng)}>Eng</div>
+                <div className='col-span-4 cursor-pointer' onClick={()=>toggleComparator(sortWordByRus)}>Rus</div>
+                <div className='col-span-1 text-center'>English</div>
+                <div className='col-span-1 text-center'>Russian</div>
+                <div className='col-span-1 text-center'>Spelling</div>
+                <div className='col-span-1 text-center'>Auding</div>
+                {vocabulary?.map((el, i) => {
+                    return <Vocabulary_row {...el} key={i} />
+                })
+                }
             </div>
-            <Button onClick={()=>{trigger({word_id: 6, method: 'RUSSIAN'})}}></Button>
         </div>
     )
 }
