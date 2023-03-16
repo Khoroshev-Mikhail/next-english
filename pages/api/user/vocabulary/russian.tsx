@@ -1,8 +1,8 @@
-import { ACCESS_IS_DENIED, NOT_ALL_DATA_PROVIDED } from 'lib/errors';
+import { ACCESS_IS_DENIED, NOT_ALL_DATA_PROVIDED, UNAUTHPRIZED } from 'lib/errors';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
-import prisma from '../../../../../lib/prisma';
-import { authOptions } from '../../../auth/[...nextauth]';
+import prisma from '../../../../lib/prisma';
+import { authOptions } from '../../auth/[...nextauth]';
 
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
     try{
@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     id: String(id)  
                 },
                 select: {
-                    auding: true,
+                    russian: true,
                 }
             })
             return res.status(200).json(data);
@@ -24,20 +24,19 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         if(id !== session.user.id){
             return res.status(403).send(ACCESS_IS_DENIED);
         }
-        const { method, word_id } : { method: 'AUDING', word_id: number } = JSON.parse(req.body)
-        if(method !== 'AUDING' || !word_id){
+        const { method, word_id } : { method: 'RUSSIAN', word_id: number } = JSON.parse(req.body)
+        if(method !== 'RUSSIAN' || !word_id){
             throw new Error(NOT_ALL_DATA_PROVIDED)
-        }
-        
+        } 
         if(req.method === "PUT"){  
             const data = await prisma.user.update({
                 where: {
                     id: String(id)
                 },
                 data: {
-                    auding: {
+                    russian: {
                         connect: { id: word_id }
-                    },
+                    }
                 },
             })
             return res.status(200).json(data);
@@ -48,10 +47,10 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     id: String(id)
                 },
                 data: {
-                    auding: {
-                        disconnect:  { id: word_id }
-                    },
-                },
+                    russian: {
+                        disconnect: { id: word_id }
+                    }
+                }
             })
             return res.status(200).json(data);
         }

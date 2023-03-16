@@ -4,24 +4,24 @@ import { updateFetch } from 'lib/fetchesCRUD'
 import useSWRMutation from 'swr/mutation'
 import { useEffect, useState } from 'react'
 
-type Data = { id: number, eng: string, rus: string, answers: { id: number, rus: string }[] }
+type Data = { id: number, eng: string, rus: string, answers: string[] }
 
 export default function English(){
-    //Получить массив невыученных слов этим методом
-    //Рендерить 0 элемент с ответами
-    //Если ответ неправильный или правильный удалять из массива и при это сетать базу
     const router = useRouter()
     const { id } = router.query
-    //Этот запрос должен происходить в одном
-    const { data, error, isLoading, mutate } = useSWR<Data>(id ? `/api/studying/${id}/english/` : null)
-    const { trigger } = useSWRMutation(id ? `/api/studying/${id}/english/` : null, updateFetch)
-
+    const { data, error, isLoading } = useSWR<Data[]>(id ? `http://localhost:3000/api/groups/${id}/english` : null)
+    const { trigger } = useSWRMutation(id ? `/api/user/vocabulary/english/` : null, updateFetch)
+    const [ i, setI ] = useState<number>(0)
+    
+    useEffect(()=>{
+        setI(0)
+    }, [data])
 
     async function goodAnswer(word_id: number){
         await trigger({ method: 'ENGLISH', word_id })
     }
     async function badAnswer(){
-        await mutate() 
+        
     }
     return(
         <div className="w-full sm:w-1/2 mx-auto grid grid-cols-6 p-4 rounded-lg border-2">

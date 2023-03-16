@@ -2,8 +2,8 @@ import { METHODS } from 'http';
 import { ACCESS_IS_DENIED, MethodLearn, NON_EXISTENT_METHOD, NOT_ALL_DATA_PROVIDED, UNAUTHPRIZED } from 'lib/errors';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
-import prisma from '../../../../../lib/prisma';
-import { authOptions } from '../../../auth/[...nextauth]';
+import prisma from '../../../../lib/prisma';
+import { authOptions } from '../../auth/[...nextauth]';
 
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
     try{

@@ -1,8 +1,9 @@
+import { METHODS } from 'http';
 import { ACCESS_IS_DENIED, MethodLearn, NON_EXISTENT_METHOD, NOT_ALL_DATA_PROVIDED, UNAUTHPRIZED } from 'lib/errors';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
-import prisma from '../../../../../lib/prisma';
-import { authOptions } from '../../../auth/[...nextauth]';
+import prisma from '../../../../lib/prisma';
+import { authOptions } from '../../auth/[...nextauth]';
 
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
     try{
@@ -14,7 +15,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     id: String(id)  
                 },
                 select: {
-                    english: true,
+                    spelling: true
                 }
             })
             return res.status(200).json(data);
@@ -24,9 +25,12 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         if(id !== session.user.id){
             return res.status(403).send(ACCESS_IS_DENIED);
         }
-        const { method, word_id } : { method: 'ENGLISH', word_id: number } = JSON.parse(req.body)
-        if(method !== 'ENGLISH' || !word_id){
+        const { method, word_id } : { method: MethodLearn, word_id: number } = JSON.parse(req.body)
+        if(!method || !word_id){
             throw new Error(NOT_ALL_DATA_PROVIDED)
+        }
+        if(METHODS.includes(method)){
+            throw new Error(NON_EXISTENT_METHOD)
         }
         
         if(req.method === "PUT"){  
@@ -35,10 +39,10 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     id: String(id)
                 },
                 data: {
-                    english: {
-                        connect: { id: +word_id }
-                    },
-                }
+                    spelling: {
+                        connect: { id: word_id }
+                    }
+                },
             })
             return res.status(200).json(data);
         }
@@ -48,9 +52,9 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     id: String(id)
                 },
                 data: {
-                    english: {
-                        disconnect: { id: +word_id }
-                    },
+                    spelling: {
+                        disconnect: { id: word_id }
+                    }
                 }
             })
             return res.status(200).json(data);

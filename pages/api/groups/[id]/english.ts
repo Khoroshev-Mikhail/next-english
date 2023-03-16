@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                         rus: true,
                         eng: true
                     }
-                }
+                },
             }
         })
         const { word_ids: badAnswers } = await prisma.group.findUnique({
@@ -43,7 +43,19 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                 }
             }
         })
-        return res.status(200).json({word_ids, badAnswers: badAnswers.map(el => el.rus)});
+        const result = []
+        const tmp = badAnswers.map(el => el.rus)
+        const set = new Set()
+        word_ids.forEach(el => {
+            while(set.size < 3){
+                set.add(tmp[Math.floor(Math.random() * tmp.length)])
+            }
+            set.add(el.rus)
+            const answers = Array.from(set).sort(() => Math.random() - 0.5)
+            result.push({ ...el, answers })
+            set.clear()
+        })
+        return res.status(200).json(result);
 
     }catch(e){
         return res.status(500).send(e.message);
