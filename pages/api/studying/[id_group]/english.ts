@@ -3,7 +3,6 @@ import prisma from '../../../../lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]';
 import { MethodLearn, NON_EXISTENT_METHOD, NOT_ALL_DATA_PROVIDED, UNAUTHPRIZED } from 'lib/errors';
-import { METHODS } from 'http';
 
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
     try{

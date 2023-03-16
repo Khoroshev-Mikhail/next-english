@@ -1,4 +1,4 @@
-import { Checkbox } from "flowbite-react";
+import { Checkbox, Spinner } from "flowbite-react";
 import { AUDING, ENGLISH, MethodLearn, RUSSIAN, SPELLING, Vocabulary_Word } from "lib/errors";
 import { deleteFetch, updateFetch } from "lib/fetchesCRUD";
 import { useSession } from "next-auth/react";
@@ -11,6 +11,7 @@ export default function Vocabulary_row(props: Vocabulary_Word ){
     const [ russian, setRussian] = useState<boolean>(props.russian)
     const [ spelling, setSpelling ] = useState<boolean>(props.spelling)
     const [ auding, setAuding ] = useState<boolean>(props.auding)
+    // const [ loading, setLoading ] = useState<boolean>(false) Как вариант так сделать при добавления спиннера
 
     const { trigger: triggerSet } = useSWRMutation(session?.user?.id ? `/api/user/${session.user.id}/vocabulary` : null, updateFetch)
     const { trigger: triggerDel } = useSWRMutation(session?.user?.id ? `/api/user/${session.user.id}/vocabulary` : null, deleteFetch)
@@ -23,18 +24,22 @@ export default function Vocabulary_row(props: Vocabulary_Word ){
     },[ props ])
 
     async function set(method: MethodLearn, word_id: number){
+        // setLoading(true)
         if(method === ENGLISH) setEnglish(true)
         if(method === RUSSIAN) setRussian(true)
         if(method === SPELLING) setSpelling(true)
         if(method === AUDING) setAuding(true)
         await triggerSet({ method, word_id})
+        // setLoading(false)
     }
     async function del(method: MethodLearn, word_id: number){
+        // setLoading(true)
         if(method === ENGLISH) setEnglish(false)
         if(method === RUSSIAN) setRussian(false)
         if(method === SPELLING) setSpelling(false)
         if(method === AUDING) setAuding(false)
         await triggerDel({ method, word_id})
+        // setLoading(false)
     }
     return(
         <>
