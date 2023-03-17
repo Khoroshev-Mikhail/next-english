@@ -10,7 +10,7 @@ export default function English(){
     const router = useRouter()
     const { id } = router.query
     const { data, error, isLoading } = useSWR<Data[]>(id ? `http://localhost:3000/api/groups/${id}/english` : null)
-    const { trigger } = useSWRMutation(id ? `/api/user/vocabulary/english/` : null, updateFetch)
+    const { trigger } = useSWRMutation(id ? `/api/vocabulary/english/` : null, updateFetch)
     const [ i, setI ] = useState<number>(0)
     
     useEffect(()=>{
@@ -18,25 +18,28 @@ export default function English(){
     }, [data])
 
     async function goodAnswer(word_id: number){
+        setI(state => state + 1)
         await trigger({ method: 'ENGLISH', word_id })
     }
     async function badAnswer(){
+        console.log(data[i])
+        setI(state => state + 1)
         
     }
     return(
         <div className="w-full sm:w-1/2 mx-auto grid grid-cols-6 p-4 rounded-lg border-2">
             <div className='col-span-6 flex justify-center border-b-2'>
-                <h3 className="text-center text-2xl font-extrabold  p-4">{ data?.eng }</h3>
+                <h3 className="text-center text-2xl font-extrabold  p-4">{ data && data[i].eng }</h3>
             </div>
             
-            { data?.answers.map((el, i) => {
+            { data && data[i].answers.map((el, i) => {
                 return (
                     <button
                         key={i}
-                        onClick={(e)=>el.rus === data.rus ? goodAnswer(data.id) : badAnswer()}
+                        onClick={ (e)=> el === data[i].rus ? goodAnswer(data[i].id) : badAnswer() }
                         className={`block col-span-6 h-12 my-2 bg-transparent hover:bg-sky-100 border-solid  duration-500 hover:duration-500 border-2 text-lg font-medium rounded-md outline-none`}
                     >
-                        {el.rus}
+                        {el}
                     </button>
                 )
             })}
