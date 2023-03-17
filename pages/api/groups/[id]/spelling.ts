@@ -12,51 +12,25 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             throw new Error(UNAUTHPRIZED)
         }
 
-        const { word_ids } = await prisma.group.findUnique({
+        const { word_ids: data } = await prisma.group.findUnique({
             where: {
                 id: Number(id)
             },
             select: {
                 word_ids: {
                     where: {
-                        english: {
+                        spelling: {
                             none: { id: String(session.user.id) }
                         }
                     },
                     select: {
                         id: true,
-                        rus: true,
                         eng: true
                     }
                 },
             }
         })
-        const { word_ids: badAnswers } = await prisma.group.findUnique({
-            where: {
-                id: Number(id),
-            },
-            select: {
-                word_ids: {
-                    select: {
-                        rus: true
-                    }
-                }
-            }
-        })
-        const result = []
-        const tmp = badAnswers.map(el => el.rus)
-        const set = new Set()
-        word_ids.forEach( async (el) => {
-            set.add(el.rus)
-            while(set.size < 4){
-                set.add(tmp[Math.floor(Math.random() * tmp.length)])
-            }
-            
-            const answers = Array.from(set).sort(() => Math.random() - 0.5)
-            result.push({ ...el, answers })
-            set.clear()
-        })
-        return res.status(200).json(result.sort(() => Math.random() - 0.5));
+        return res.status(200).json(data.sort(() => Math.random() - 0.5));
 
     }catch(e){
         return res.status(500).send(e.message);

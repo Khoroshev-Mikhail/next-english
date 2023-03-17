@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             select: {
                 word_ids: {
                     where: {
-                        english: {
+                        russian: {
                             none: { id: String(session.user.id) }
                         }
                     },
@@ -38,16 +38,16 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             select: {
                 word_ids: {
                     select: {
-                        rus: true
+                        eng: true
                     }
                 }
             }
         })
         const result = []
-        const tmp = badAnswers.map(el => el.rus)
+        const tmp = badAnswers.map(el => el.eng)
         const set = new Set()
         word_ids.forEach( async (el) => {
-            set.add(el.rus)
+            set.add(el.eng)
             while(set.size < 4){
                 set.add(tmp[Math.floor(Math.random() * tmp.length)])
             }
