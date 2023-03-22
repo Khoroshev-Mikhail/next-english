@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]';
 import { UNAUTHPRIZED } from 'lib/errors';
 
+
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
     try{
         const { id } = req.query
@@ -24,7 +25,8 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     },
                     select: {
                         id: true,
-                        eng: true
+                        eng: true,
+                        rus: true,
                     }
                 },
             }

@@ -7,15 +7,14 @@ import { authOptions } from '../../auth/[...nextauth]';
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
     try{
         const session = await getServerSession(req, res, authOptions)
-        if(session?.user?.id){
+        if(!session.user.id){
             return res.status(403).send(ACCESS_IS_DENIED);
         }
-        const id = session?.user?.id
         
         if(req.method === "GET"){
             const data = await prisma.user.findUnique({
                 where: {
-                    id: String(id)  
+                    id: String(session.user.id)  
                 },
                 select: {
                     english: true,
@@ -32,7 +31,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         if(req.method === "PUT"){  
             const data = await prisma.user.update({
                 where: {
-                    id: String(id)
+                    id: String(session.user.id)
                 },
                 data: {
                     english: {
@@ -45,7 +44,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         if(req.method === "DELETE"){
             const data = await prisma.user.update({
                 where: {
-                    id: String(id)
+                    id: String(session.user.id)
                 },
                 data: {
                     english: {

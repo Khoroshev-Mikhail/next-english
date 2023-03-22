@@ -1,20 +1,18 @@
-import { Checkbox, Spinner } from "flowbite-react";
+import { Checkbox } from "flowbite-react";
 import { AUDING, ENGLISH, MethodLearn, RUSSIAN, SPELLING, Vocabulary_Word } from "lib/errors";
 import { deleteFetch, updateFetch } from "lib/fetchesCRUD";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import useSWRMutation from 'swr/mutation'
 
 export default function Vocabulary_row(props: Vocabulary_Word ){
-    const { data: session } = useSession()
     const [ english, setEnglish ] = useState<boolean>(props.english)
     const [ russian, setRussian] = useState<boolean>(props.russian)
     const [ spelling, setSpelling ] = useState<boolean>(props.spelling)
     const [ auding, setAuding ] = useState<boolean>(props.auding)
     // const [ loading, setLoading ] = useState<boolean>(false) Как вариант так сделать при добавления спиннера
 
-    const { trigger: triggerSet } = useSWRMutation(session?.user?.id ? `/api/user/${session.user.id}/vocabulary` : null, updateFetch)
-    const { trigger: triggerDel } = useSWRMutation(session?.user?.id ? `/api/user/${session.user.id}/vocabulary` : null, deleteFetch)
+    const { trigger: triggerSet } = useSWRMutation(`/api/user/vocabulary`, updateFetch)
+    const { trigger: triggerDel } = useSWRMutation(`/api/user/vocabulary`, deleteFetch)
 
     useEffect(()=>{
         setEnglish(props.english)
@@ -56,10 +54,10 @@ export default function Vocabulary_row(props: Vocabulary_Word ){
                 <Checkbox value={props.id} checked={russian} onChange={(e)=> russian ? del(RUSSIAN, +e.target.value) : set(RUSSIAN, props.id)}/>     
             </div>
             <div className='col-span-1 text-center'>
-                <Checkbox value={props.id} onChange={(e)=> spelling ? del(SPELLING, +e.target.value) : set(SPELLING, props.id)}/>
+                <Checkbox value={props.id} checked={spelling}  onChange={(e)=> spelling ? del(SPELLING, +e.target.value) : set(SPELLING, props.id)}/>
             </div>
             <div className='col-span-1 text-center'>
-                <Checkbox value={props.id} onChange={(e)=> auding ? del(AUDING, +e.target.value) : set(AUDING, props.id)}/>
+                <Checkbox value={props.id} checked={auding}  onChange={(e)=> auding ? del(AUDING, +e.target.value) : set(AUDING, props.id)}/>
             </div>
         </>
     )

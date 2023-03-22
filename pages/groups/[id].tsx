@@ -11,7 +11,8 @@ export default function Group_Page(){
     return(
         <div className="grid grid-cols-12 gap-4 p-4 rounded-lg">
             <div className='col-span-12'>
-                <h1 className='text-4xl text-center pb-4'>{data?.eng}</h1>
+                {/* задай мин высоту чтобы не скакало */}
+                <h1 className='text-4xl text-center pb-4'>{data?.eng}</h1> 
             </div>
             <Method_card method='english' />
             <Method_card method='russian' />

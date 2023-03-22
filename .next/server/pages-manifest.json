@@ -1,5 +1,17 @@
 {
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js"
+  "/_document": "pages/_document.js",
+  "/api/user/[id]": "pages/api/user/[id].js",
+  "/api/user/vocabulary": "pages/api/user/vocabulary.js",
+  "/groups": "pages/groups.js",
+  "/user": "pages/user.js",
+  "/admin/groups": "pages/admin/groups.js",
+  "/api/admin/groups": "pages/api/admin/groups.js",
+  "/api/admin/groups/[id]/words": "pages/api/admin/groups/[id]/words.js",
+  "/api/admin/words/search": "pages/api/admin/words/search.js",
+  "/admin/words": "pages/admin/words.js",
+  "/api/admin/words": "pages/api/admin/words.js",
+  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
+  "/api/groups": "pages/api/groups.js"
 }
