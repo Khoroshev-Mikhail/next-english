@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { ENGLISH } from 'lib/errors'
 
 type Data = { id: number, eng: string, rus: string, answers: string[] }
-
+//https://www.npmjs.com/package/react-speech-recognition#basic-example
 export default function English(){
     const router = useRouter()
     const { id } = router.query

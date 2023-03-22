@@ -8,7 +8,7 @@ import { authOptions } from '../../auth/[...nextauth]';
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
     try{
         const session = await getServerSession(req, res, authOptions)
-        if(session.user.id){
+        if(!session.user.id){
             return res.status(403).send(ACCESS_IS_DENIED);
         }
 

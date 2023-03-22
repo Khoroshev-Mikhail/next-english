@@ -25,7 +25,8 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     },
                     select: {
                         id: true,
-                        eng: true
+                        eng: true,
+                        rus: true
                     }
                 },
             }
