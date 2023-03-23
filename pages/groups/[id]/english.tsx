@@ -1,23 +1,36 @@
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import { updateFetch } from 'lib/fetchesCRUD'
 import useSWRMutation from 'swr/mutation'
 import { useEffect, useState } from 'react'
-import { ENGLISH } from 'lib/errors'
+import { DELAY, ENGLISH } from 'lib/errors'
+import { speechText } from 'lib/fns'
 
 type Data = { id: number, eng: string, rus: string, answers: string[] }
-//https://www.npmjs.com/package/react-speech-recognition#basic-example
 export default function English(){
     const router = useRouter()
     const { id } = router.query
-    const { data, error, isLoading } = useSWR<Data[]>(id ? `/api/groups/${id}/english` : null)
+    const { data, error, isLoading, isValidating } = useSWR<Data[]>(id ? `/api/groups/${id}/english` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/english/`, updateFetch)
     const [ i, setI ] = useState<number>(0)
     const [ isGoodAnswer, setAnswer ] = useState<boolean>(null)
+    const { cache } = useSWRConfig()
     
     useEffect(()=>{
         setI(0)
     }, [data])
+
+    useEffect(()=>{
+        if(!isLoading && !isValidating && data && data[i]){
+            speechText(data[i].eng)
+        }
+    }, [i, data])
+
+    useEffect(()=>{
+        return () => {
+            cache.delete(`/api/groups/${id}/english`)
+        }
+    },[])
 
     async function answer(word_id: number, rus: string){
         setAnswer(data[i].rus == rus ? true : false)
@@ -28,7 +41,7 @@ export default function English(){
         setTimeout(() => {
             setI(state => state + 1)
             setAnswer(null)
-        }, 1000)
+        }, DELAY)
     }
 
     return(

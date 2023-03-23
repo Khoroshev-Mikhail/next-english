@@ -12,6 +12,7 @@ export const SPELLING = 'SPELLING'
 export const AUDING = 'AUDING'
 export const SPEAKING = 'SPEAKING'
 export const METHODS: MethodLearn[] = [ENGLISH, RUSSIAN, SPELLING, AUDING, SPEAKING]
+export const DELAY = 300
 
 //Типы
 export type MethodLearn = 'ENGLISH' | 'RUSSIAN' | 'AUDING' | 'SPELLING' | 'SPEAKING'

@@ -4,7 +4,7 @@ import { updateFetch } from 'lib/fetchesCRUD'
 import useSWRMutation from 'swr/mutation'
 import { useEffect, useState } from 'react'
 import { Spinner, TextInput } from 'flowbite-react'
-import { AUDING, SPEAKING } from 'lib/errors'
+import { AUDING, DELAY, SPEAKING } from 'lib/errors'
 import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-polyfill';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
@@ -13,7 +13,7 @@ const APP_ID = "5f4e33d5-c05f-4e56-928e-36257a6661b0"
 export default function Speaking(){
     const router = useRouter()
     const { id } = router.query
-    const { data, error, isLoading, mutate } = useSWR<{ id: number, eng: string, rus: string }[]>(id ? `/api/groups/${id}/speaking` : null)
+    const { data, error, isLoading } = useSWR<{ id: number, eng: string, rus: string }[]>(id ? `/api/groups/${id}/speaking` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/speaking/`, updateFetch)
     const [ i, setI ] = useState<number>(0)
     const [ answer, setAnswer ] = useState<string>('')
@@ -30,7 +30,7 @@ export default function Speaking(){
                 setTimeout(() => { 
                     setI(state => state + 1) 
                     resetTranscript()
-                }, 1000)
+                }, DELAY)
             }
         }
     }, [answer, data, i, transcript])
@@ -40,11 +40,11 @@ export default function Speaking(){
     }, [data])
 
     useEffect(()=>{
-        mutate()
         startListening()
         return () => {
             SpeechRecognition.stopListening()
         }
+
     }, [])
 
     // if (!browserSupportsSpeechRecognition) {

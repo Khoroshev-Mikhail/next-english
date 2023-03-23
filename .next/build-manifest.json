@@ -30,15 +30,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/groups.js"
     ],
-    "/groups/[id]": [
+    "/groups/[id]/english": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/groups/[id].js"
+      "static/chunks/pages/groups/[id]/english.js"
     ],
-    "/groups/[id]/auding": [
+    "/user": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/groups/[id]/auding.js"
+      "static/chunks/pages/user.js"
     ]
   },
   "ampFirstPages": []

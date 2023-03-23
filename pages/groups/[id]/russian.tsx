@@ -1,16 +1,17 @@
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import { updateFetch } from 'lib/fetchesCRUD'
 import useSWRMutation from 'swr/mutation'
 import { useEffect, useState } from 'react'
-import { RUSSIAN } from 'lib/errors'
+import { DELAY, RUSSIAN } from 'lib/errors'
+import { speechText } from 'lib/fns'
 
 type Data = { id: number, eng: string, rus: string, answers: string[] }
 
 export default function Russian(){
     const router = useRouter()
     const { id } = router.query
-    const { data, error, isLoading } = useSWR<Data[]>(id ? `/api/groups/${id}/russian` : null)
+    const { data, error, isLoading, isValidating } = useSWR<Data[]>(id ? `/api/groups/${id}/russian` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/russian/`, updateFetch)
     const [ i, setI ] = useState<number>(0)
     const [ isGoodAnswer, setAnswer ] = useState<boolean>(null)
@@ -22,15 +23,14 @@ export default function Russian(){
     async function answer(word_id: number, eng: string){
         setAnswer(data[i].eng == eng ? true : false)
         if(data[i].eng === eng){
+            speechText(data[i].eng)
             trigger({ method: RUSSIAN, word_id })
         }
-        //audio
         setTimeout(() => {
             setI(state => state + 1)
             setAnswer(null)
-        }, 1000)
+        }, DELAY)
     }
-
     return(
         <div className="w-full sm:w-1/2 mx-auto grid grid-cols-6 p-4 rounded-lg border-2">
             <div className='col-span-6 flex justify-center border-b-2'>
