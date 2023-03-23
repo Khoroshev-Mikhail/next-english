@@ -25,6 +25,16 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
+    "/groups": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/groups.js"
+    ],
+    "/groups/[id]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/groups/[id].js"
+    ],
     "/groups/[id]/auding": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

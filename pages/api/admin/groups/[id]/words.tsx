@@ -8,15 +8,15 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         if(!id){
             throw new Error(WITHOUT_ID)
         }
-        const { word_ids } = await prisma.group.findUnique({
+        const { words } = await prisma.group.findUnique({
             where: {
                 id: Number(id)
             },
             select: {
-                word_ids: true
+                words: true
             }
         })
-        return res.status(200).json(word_ids);
+        return res.status(200).json(words);
     }catch(e){
         return res.status(500).send(e.message);
     }

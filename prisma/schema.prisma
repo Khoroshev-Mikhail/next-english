@@ -45,6 +45,7 @@ model User {
   russian       Word[] @relation("russian")
   spelling      Word[] @relation("spelling")
   auding        Word[] @relation("auding")
+  speaking      Word[] @relation("speaking") 
   @@map(name: "users")
 }
 model VerificationToken {
@@ -74,7 +75,8 @@ model Word{
   russian       User[] @relation("russian")   
   spelling      User[] @relation("spelling")
   auding        User[] @relation("auding")  
-  group_ids     Group[]
+  speaking      User[] @relation("speaking")  
+  groups        Group[]
   visible       Boolean @default(true)
 }
 model Group{

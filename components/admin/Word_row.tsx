@@ -7,25 +7,25 @@ import useSWR from 'swr'
 import { Group, Word } from '@prisma/client'
 import { updateFetch } from 'lib/fetchesCRUD'
 
-export default function Word_row(props : { id: number, eng: string, rus: string, group_ids: {id: number}[] }){
+export default function Word_row(props : { id: number, eng: string, rus: string, groups: {id: number}[] }){
     const [ isUpdating, setUpdating ] = useState<boolean>(false)
     const [ eng, setEng ] = useState<string>(props.eng)
     const [ rus, setRus ] = useState<string>(props.rus)
-    const [ group_ids, setGroup_ids ] = useState<number[]>(props.group_ids.map(el => el.id))
+    const [ groups, setGroup_ids ] = useState<number[]>(props.groups.map(el => el.id))
 
-    const { data: groups,  isLoading: isLoadingGroups } = useSWR<Group[]>(`/api/admin/groups`)
+    const { data,  isLoading: isLoadingGroups } = useSWR<Group[]>(`/api/admin/groups`)
     const { trigger } = useSWRMutation(`/api/admin/words/${props.id}`, updateFetch)
     const { mutate } = useSWR(`/api/admin/words`)
 
     async function handler(){
         setUpdating(false)
-        if(eng !== props.eng || rus !== props.rus || JSON.stringify(group_ids) !== JSON.stringify(props.group_ids)){
-            await trigger({eng, rus, group_ids})
+        if(eng !== props.eng || rus !== props.rus || JSON.stringify(groups) !== JSON.stringify(props.groups)){
+            await trigger({eng, rus, groups})
             mutate()
         }
     }
     function handlerGroup_ids(i){
-        if(group_ids.includes(+i)){
+        if(groups.includes(+i)){
             setGroup_ids(state => state.filter(el => el != i))
         } else{
             setGroup_ids(state => state.concat([+i]))
@@ -35,7 +35,7 @@ export default function Word_row(props : { id: number, eng: string, rus: string,
     useEffect(()=>{
         setEng(props.eng)
         setRus(props.rus)
-        setGroup_ids(props.group_ids.map(el => el.id))
+        setGroup_ids(props.groups.map(el => el.id))
     },[props])
 
     return(
@@ -74,10 +74,10 @@ export default function Word_row(props : { id: number, eng: string, rus: string,
                 </div>
                 <div className="col-span-12 grid grid-cols-12 border border-gray-200 rounded-lg py-4  gap-4">
                     {isLoadingGroups && <Spinner size='xl' />}
-                    {!isLoadingGroups && groups && groups.map((el, i) => {
+                    {!isLoadingGroups && data && data.map((el, i) => {
                         return (
                             <div className='col-span-3 pl-4' key={i}>
-                                <Checkbox id={String(el.id) + props.id} value={el.id} checked={group_ids.includes(el.id)} onChange={({ target: {value} }) => handlerGroup_ids(value)}/>
+                                <Checkbox id={String(el.id) + props.id} value={el.id} checked={groups.includes(el.id)} onChange={({ target: {value} }) => handlerGroup_ids(value)}/>
                                 <Label htmlFor={String(el.id) + props.id}> {el.eng} - {el.rus}</Label>
                             </div>
                         )

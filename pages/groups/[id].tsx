@@ -17,7 +17,7 @@ export default function Group_Page(){
             <Method_card method='english' />
             <Method_card method='russian' />
             <Method_card method='auding' />
-            <Method_card method='spelling' />
+            <Method_card method='speaking' />
         </div>
     )
 }

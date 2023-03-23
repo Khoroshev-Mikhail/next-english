@@ -5,11 +5,11 @@ import useSWR from 'swr'
 import { Word } from '@prisma/client'
 import { updateFetch } from 'lib/fetchesCRUD'
 
-export default function Group_row(props : { id: number, eng: string, rus: string, word_ids: {id: number}[] }){
+export default function Group_row(props : { id: number, eng: string, rus: string, words: {id: number}[] }){
     const [ isUpdating, setUpdating ] = useState<boolean>(false)
     const [ eng, setEng ] = useState<string>(props.eng)
     const [ rus, setRus ] = useState<string>(props.rus)
-    const [ word_ids, setWord_ids ] = useState<number[]>(props.word_ids.map(el => el.id))
+    const [ words, setWord_ids ] = useState<number[]>(props.words.map(el => el.id))
     const [ str, setStr ] = useState<string>('')
 
     const { data, isLoading } = useSWR<Word[]>(props.id ? `/api/admin/groups/${props.id}/words` : null)
@@ -20,13 +20,13 @@ export default function Group_row(props : { id: number, eng: string, rus: string
 
     async function handler(){
         setUpdating(false)
-        if(eng !== props.eng || rus !== props.rus || JSON.stringify(word_ids) !== JSON.stringify(props.word_ids)){
-            await trigger({eng, rus, word_ids})
+        if(eng !== props.eng || rus !== props.rus || JSON.stringify(words) !== JSON.stringify(props.words)){
+            await trigger({eng, rus, words})
             mutate()
         }
     }
     function handlerWord_ids(i){
-        if(word_ids.includes(+i)){
+        if(words.includes(+i)){
             setWord_ids(state => state.filter(el => el != i))
         } else{
             setWord_ids(state => state.concat([+i]))
@@ -36,7 +36,7 @@ export default function Group_row(props : { id: number, eng: string, rus: string
     useEffect(()=>{
         setEng(props.eng)
         setRus(props.rus)
-        setWord_ids(props.word_ids.map(el => el.id))
+        setWord_ids(props.words.map(el => el.id))
     },[ props ])
 
     return(
@@ -85,7 +85,7 @@ export default function Group_row(props : { id: number, eng: string, rus: string
                         {!isLoadingSearch && search && search.map((el, i) => {
                             return (
                                 <div className='col-span-3 pl-4' key={i}>
-                                    <Checkbox id={String(el.id) + props.id} value={el.id} checked={word_ids.includes(el.id)} onChange={({ target: {value} }) => handlerWord_ids(value)}/>
+                                    <Checkbox id={String(el.id) + props.id} value={el.id} checked={words.includes(el.id)} onChange={({ target: {value} }) => handlerWord_ids(value)}/>
                                     <Label htmlFor={String(el.id) + props.id}> {el.eng} / {el.rus}</Label>
                                 </div>
                             )
@@ -98,7 +98,7 @@ export default function Group_row(props : { id: number, eng: string, rus: string
                     {!isLoading && data && data.map((el, i) => {
                         return (
                             <div className='col-span-3 pl-4' key={i}>
-                                <Checkbox id={String(el.id) + props.id} value={el.id} checked={word_ids.includes(el.id)} onChange={({ target: {value} }) => handlerWord_ids(value)}/>
+                                <Checkbox id={String(el.id) + props.id} value={el.id} checked={words.includes(el.id)} onChange={({ target: {value} }) => handlerWord_ids(value)}/>
                                 <Label htmlFor={String(el.id) + props.id}> {el.eng} / {el.rus}</Label>
                             </div>
                         )

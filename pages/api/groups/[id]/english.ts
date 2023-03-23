@@ -12,12 +12,12 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             throw new Error(UNAUTHPRIZED)
         }
 
-        const { word_ids } = await prisma.group.findUnique({
+        const { words } = await prisma.group.findUnique({
             where: {
                 id: Number(id)
             },
             select: {
-                word_ids: {
+                words: {
                     where: {
                         english: {
                             none: { id: String(session.user.id) }
@@ -31,12 +31,12 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                 },
             }
         })
-        const { word_ids: badAnswers } = await prisma.group.findUnique({
+        const { words: badAnswers } = await prisma.group.findUnique({
             where: {
                 id: Number(id),
             },
             select: {
-                word_ids: {
+                words: {
                     select: {
                         rus: true
                     }
@@ -46,7 +46,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         const result = []
         const tmp = badAnswers.map(el => el.rus)
         const set = new Set()
-        word_ids.forEach( async (el) => {
+        words.forEach( async (el) => {
             set.add(el.rus)
             while(set.size < 4){
                 set.add(tmp[Math.floor(Math.random() * tmp.length)])

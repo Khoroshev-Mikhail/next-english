@@ -1,5 +1,5 @@
 import { Checkbox } from "flowbite-react";
-import { AUDING, ENGLISH, MethodLearn, RUSSIAN, SPELLING, Vocabulary_Word } from "lib/errors";
+import { AUDING, ENGLISH, MethodLearn, RUSSIAN, SPEAKING, Vocabulary_Word } from "lib/errors";
 import { deleteFetch, updateFetch } from "lib/fetchesCRUD";
 import { useEffect, useState } from "react";
 import useSWRMutation from 'swr/mutation'
@@ -7,7 +7,7 @@ import useSWRMutation from 'swr/mutation'
 export default function Vocabulary_row(props: Vocabulary_Word ){
     const [ english, setEnglish ] = useState<boolean>(props.english)
     const [ russian, setRussian] = useState<boolean>(props.russian)
-    const [ spelling, setSpelling ] = useState<boolean>(props.spelling)
+    const [ speaking, setSpeaking ] = useState<boolean>(props.speaking)
     const [ auding, setAuding ] = useState<boolean>(props.auding)
     // const [ loading, setLoading ] = useState<boolean>(false) Как вариант так сделать при добавления спиннера
 
@@ -17,7 +17,7 @@ export default function Vocabulary_row(props: Vocabulary_Word ){
     useEffect(()=>{
         setEnglish(props.english)
         setRussian(props.russian)
-        setSpelling(props.spelling)
+        setSpeaking(props.speaking)
         setAuding(props.auding)
     },[ props ])
 
@@ -25,7 +25,7 @@ export default function Vocabulary_row(props: Vocabulary_Word ){
         // setLoading(true)
         if(method === ENGLISH) setEnglish(true)
         if(method === RUSSIAN) setRussian(true)
-        if(method === SPELLING) setSpelling(true)
+        if(method === SPEAKING) setSpeaking(true)
         if(method === AUDING) setAuding(true)
         await triggerSet({ method, word_id})
         // setLoading(false)
@@ -34,7 +34,7 @@ export default function Vocabulary_row(props: Vocabulary_Word ){
         // setLoading(true)
         if(method === ENGLISH) setEnglish(false)
         if(method === RUSSIAN) setRussian(false)
-        if(method === SPELLING) setSpelling(false)
+        if(method === SPEAKING) setSpeaking(false)
         if(method === AUDING) setAuding(false)
         await triggerDel({ method, word_id})
         // setLoading(false)
@@ -54,7 +54,7 @@ export default function Vocabulary_row(props: Vocabulary_Word ){
                 <Checkbox value={props.id} checked={russian} onChange={(e)=> russian ? del(RUSSIAN, +e.target.value) : set(RUSSIAN, props.id)}/>     
             </div>
             <div className='col-span-1 text-center'>
-                <Checkbox value={props.id} checked={spelling}  onChange={(e)=> spelling ? del(SPELLING, +e.target.value) : set(SPELLING, props.id)}/>
+                <Checkbox value={props.id} checked={speaking}  onChange={(e)=> speaking ? del(SPEAKING, +e.target.value) : set(SPEAKING, props.id)}/>
             </div>
             <div className='col-span-1 text-center'>
                 <Checkbox value={props.id} checked={auding}  onChange={(e)=> auding ? del(AUDING, +e.target.value) : set(AUDING, props.id)}/>

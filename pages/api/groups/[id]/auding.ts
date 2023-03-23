@@ -12,12 +12,12 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         if(!session?.user.id){
             throw new Error(UNAUTHPRIZED)
         }
-        const { word_ids: data } = await prisma.group.findUnique({
+        const { words: data } = await prisma.group.findUnique({
             where: {
                 id: Number(id)
             },
             select: {
-                word_ids: {
+                words: {
                     where: {
                         auding: {
                             none: { id: String(session.user.id) }

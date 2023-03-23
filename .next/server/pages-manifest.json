@@ -2,18 +2,11 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/user": "pages/user.js",
-  "/admin/words": "pages/admin/words.js",
-  "/api/user/[id]": "pages/api/user/[id].js",
-  "/api/admin/groups": "pages/api/admin/groups.js",
-  "/admin/groups": "pages/admin/groups.js",
-  "/api/admin/groups/[id]/words": "pages/api/admin/groups/[id]/words.js",
-  "/api/admin/words/search": "pages/api/admin/words/search.js",
+  "/api/groups/[id]/auding": "pages/api/groups/[id]/auding.js",
+  "/groups/[id]/auding": "pages/groups/[id]/auding.js",
   "/groups": "pages/groups.js",
-  "/api/admin/words": "pages/api/admin/words.js",
-  "/groups/[id]": "pages/groups/[id].js",
   "/api/groups": "pages/api/groups.js",
-  "/api/groups/[id]": "pages/api/groups/[id].js",
-  "/api/user/vocabulary": "pages/api/user/vocabulary.js"
+  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
+  "/groups/[id]": "pages/groups/[id].js",
+  "/api/groups/[id]": "pages/api/groups/[id].js"
 }

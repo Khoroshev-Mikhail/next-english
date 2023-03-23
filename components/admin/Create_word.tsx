@@ -8,19 +8,19 @@ import { Group } from '@prisma/client'
 export default function CreateWord(){
     const [eng, setEng] = useState<string>('')
     const [rus, setRus] = useState<string>('')
-    const [group_ids, setGroup_ids] = useState<number[]>([])
+    const [groups, setGroup_ids] = useState<number[]>([])
 
-    const {data: groups, error, isLoading} = useSWR<Group[]>(`/api/admin/groups`)
+    const {data, error, isLoading} = useSWR<Group[]>(`/api/admin/groups`)
     const { trigger } = useSWRMutation(`/api/admin/words`, createFetch)
 
     function handler(){
-        trigger({eng, rus, group_ids})
+        trigger({eng, rus, groups})
         setEng('')
         setRus('')
         setGroup_ids([])
     }
     function handlerGroup_ids(i){
-        if(group_ids.includes(i)){
+        if(groups.includes(i)){
             setGroup_ids(state => state.filter(el => el !== i))
         } else{
             setGroup_ids(state => state.concat([+i]))
@@ -47,7 +47,7 @@ export default function CreateWord(){
             <h4 className='mt-4 mb-2'>Включить его в группы</h4>
             <div className="grid grid-cols-12 border border-gray-200 rounded-lg py-4 gap-4">
                 {isLoading && <Spinner size='xl' />}
-                {!isLoading && groups && groups.map((el, i) => {
+                {!isLoading && data && data.map((el, i) => {
                     return (
                         <div className='col-span-3 pl-4' key={i}>
                             <Checkbox id={String(el.id)} value={el.id} onChange={({ target: {value} }) => handlerGroup_ids(value)}/>

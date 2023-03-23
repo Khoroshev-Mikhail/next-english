@@ -38,7 +38,7 @@ export default function UserPage(){
                 <div className='col-span-4 cursor-pointer' onClick={()=>toggleComparator(sortWordByRus)}>Rus</div>
                 <div className='col-span-1 text-center'>English</div>
                 <div className='col-span-1 text-center'>Russian</div>
-                <div className='col-span-1 text-center'>Spelling</div>
+                <div className='col-span-1 text-center'>Speaking</div>
                 <div className='col-span-1 text-center'>Auding</div>
                 {sorted.map((el, i) => {
                     return <Vocabulary_row {...el} key={i} />

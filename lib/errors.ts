@@ -10,10 +10,11 @@ export const ENGLISH = 'ENGLISH'
 export const RUSSIAN = 'RUSSIAN'
 export const SPELLING = 'SPELLING'
 export const AUDING = 'AUDING'
-export const METHODS: MethodLearn[] = [ENGLISH, RUSSIAN, SPELLING, AUDING]
+export const SPEAKING = 'SPEAKING'
+export const METHODS: MethodLearn[] = [ENGLISH, RUSSIAN, SPELLING, AUDING, SPEAKING]
 
 //Типы
-export type MethodLearn = 'ENGLISH' | 'RUSSIAN' | 'AUDING' | 'SPELLING'
+export type MethodLearn = 'ENGLISH' | 'RUSSIAN' | 'AUDING' | 'SPELLING' | 'SPEAKING'
 export type Vocabulary = {
     english: number[]
     russian: number[]
@@ -28,4 +29,5 @@ export type Vocabulary_Word = {
     russian: boolean
     spelling: boolean
     auding: boolean
+    speaking: boolean
 }

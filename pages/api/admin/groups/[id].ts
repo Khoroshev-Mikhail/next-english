@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     id: Number(id)  
                 },
                 include: {
-                    word_ids: {
+                    words: {
                         select: {
                             id: true
                         }
@@ -28,8 +28,8 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             return res.status(200).json(data);
         }
         if(req.method === "PUT"){
-            const { eng, rus, word_ids } : { eng: string, rus: string, word_ids: number[] } = JSON.parse(req.body)
-            if(!eng || !rus || !word_ids){
+            const { eng, rus, words } : { eng: string, rus: string, words: number[] } = JSON.parse(req.body)
+            if(!eng || !rus || !words){
                 throw new Error(NOT_ALL_DATA_PROVIDED)
             }
             const data = await prisma.group.update({
@@ -39,9 +39,9 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                 data: {
                     eng: eng ? String(eng) : undefined,
                     rus: rus ? String(rus) : undefined,
-                    word_ids: {
-                        connect: word_ids.length !== 0 ? word_ids.map(el => ({ id: +el })) : undefined,
-                        set: word_ids.length === 0 ? [] : undefined
+                    words: {
+                        connect: words.length !== 0 ? words.map(el => ({ id: +el })) : undefined,
+                        set: words.length === 0 ? [] : undefined
                     }
                 } 
             })

@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         if(req.method === "GET"){
             const data = await prisma.word.findMany({
                 include: {
-                    group_ids: {
+                    groups: {
                         select: {
                             id: true
                         }
@@ -23,16 +23,16 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             return res.status(200).json(data);
         }
         if(req.method === "POST"){
-            const { eng, rus, group_ids } = JSON.parse(req.body)
-            if(!eng || !rus || !group_ids){
+            const { eng, rus, groups } = JSON.parse(req.body)
+            if(!eng || !rus || !groups){
                 throw new Error(NOT_ALL_DATA_PROVIDED)
             }
             const data = await prisma.word.create({
                 data: {
                     eng: eng,
                     rus: rus,
-                    group_ids: {
-                        connect: group_ids.map((el: number) => ({id: el}))
+                    groups: {
+                        connect: groups.map((el: number) => ({id: el}))
                     }
                 }
             })
