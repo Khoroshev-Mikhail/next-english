@@ -48,10 +48,9 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         const set = new Set()
         words.forEach( async (el) => {
             set.add(el.eng)
-            while(set.size < 4){
+            while(set.size < (words.length < 4 ? words.length : 4)){
                 set.add(tmp[Math.floor(Math.random() * tmp.length)])
             }
-            
             const answers = Array.from(set).sort(() => Math.random() - 0.5)
             result.push({ ...el, answers })
             set.clear()
