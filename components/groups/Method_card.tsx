@@ -1,13 +1,28 @@
+import { Button, Progress } from "flowbite-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import useSWR from 'swr'
 
-export default function Method_card({ method } : { method: string }){
+export default function Method_card({ method, header } : { method: string, header: string }){
     const router = useRouter()
     const { id } = router.query
+    const { data } = useSWR(id ? `/api/groups/${id}/progress` : null)
     return (
-        <Link href={`${id}/${method}`} className="block col-span-6 sm:col-span-4 md:col-span-3 lg:col-span-3 xl:col-span-2 rounded-xl border-2 border-grey grid grid-cols-6 text-center hover:bg-sky-100 duration-500 hover:duration-500">
-            <h3 className="col-span-6 text-2xl font-extrabold border-b-2 mx-4 py-4">{ method }</h3>
-            <div className="w-full p-4">50%</div>
-        </Link>
+        <div className="block truncate col-span-6 sm:col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-3 rounded-xl border-2 border-gray grid grid-cols-6 text-center shadow-md">
+            <h3 className="col-span-6 text-2xl font-extrabold mx-4 py-4 border-b-2 truncate">
+                <Link href={`${id}/${method}`}>
+                    { header }
+                </Link>
+            </h3>
+            <div className="col-span-6 p-2 text-center truncate">
+                { method === 'english' && <Progress progress={data?.english || 0} label="Перевод с Английского" labelPosition="outside"></Progress> }
+                { method === 'russian' && <Progress progress={data?.russian || 0} label="Перевод с Русского" labelPosition="outside"></Progress> }
+                { method === 'auding' && <Progress progress={data?.auding || 0} label="Аудирование" labelPosition="outside"></Progress> }
+                { method === 'speaking' && <Progress progress={data?.speaking || 0} label="Произношение" labelPosition="outside"></Progress> }
+            </div>
+            <div className="col-span-6 py-2 text-center flex justify-center">
+                <Link href={`${id}/${method}`}><Button>Учить!</Button></Link>
+            </div>
+        </div>    
     )
 }

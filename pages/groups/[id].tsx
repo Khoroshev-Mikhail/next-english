@@ -14,10 +14,10 @@ export default function Group_Page(){
                 {/* задай мин высоту чтобы не скакало */}
                 <h1 className='text-4xl text-center pb-4'>{data?.eng}</h1> 
             </div>
-            <Method_card method='english' />
-            <Method_card method='russian' />
-            <Method_card method='auding' />
-            <Method_card method='speaking' />
+            <Method_card method='english' header='Перевод с Англ' />
+            <Method_card method='russian' header='Перевод с Рус.' />
+            <Method_card method='auding' header='Аудирование' />
+            <Method_card method='speaking' header='Произношение' />
         </div>
     )
 }
