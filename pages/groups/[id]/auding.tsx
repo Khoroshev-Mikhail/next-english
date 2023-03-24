@@ -32,14 +32,14 @@ export default function Auding(){
     }, [data])
 
     useEffect(()=>{
-        if(!isLoading && !isValidating && data && data[i]){
+        if(data && data[i]){
             speechText(data[i].eng)
         }
     }, [i, data])
     
     useEffect(()=>{
         return () => {
-            cache.delete(`/api/groups/${id}/english`)
+            cache.delete(`/api/groups/${id}/auding`)
         }
     },[])
     return(

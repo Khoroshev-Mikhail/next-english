@@ -2,13 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/api/groups/[id]/progress": "pages/api/groups/[id]/progress.js",
-  "/groups/[id]": "pages/groups/[id].js",
-  "/api/groups/[id]": "pages/api/groups/[id].js",
-  "/groups/[id]/english": "pages/groups/[id]/english.js",
-  "/api/groups/[id]/english": "pages/api/groups/[id]/english.js",
-  "/api/user/vocabulary/english": "pages/api/user/vocabulary/english.js",
-  "/groups": "pages/groups.js",
-  "/api/groups": "pages/api/groups.js"
+  "/groups/[id]/russian": "pages/groups/[id]/russian.js",
+  "/api/groups/[id]/russian": "pages/api/groups/[id]/russian.js",
+  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js"
 }
