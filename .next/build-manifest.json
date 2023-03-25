@@ -29,6 +29,16 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/groups.js"
+    ],
+    "/groups/[id]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/groups/[id].js"
+    ],
+    "/groups/[id]/auding": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/groups/[id]/auding.js"
     ]
   },
   "ampFirstPages": []
