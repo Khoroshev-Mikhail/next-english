@@ -12,16 +12,15 @@ export default function Main(){
     },[session])
     return(
         <div className="">
-            <Button color="light" onClick={() => signIn()}>
-                Войти
-            </Button>
-            <Button color="light" onClick={() => signOut()}>
-                Выход
-            </Button>
-            <div>вошел как {session?.user?.email}</div>
-            {/* {data && data.map(el =>{
-                return <p>{el.eng}</p>
-            })} */}
+            <h1>todo</h1>
+            <ul>
+                <li>Пагинация для методов изучения слов</li>
+                <li>страница пользователя / словаря</li>
+                <li>авторизация через яндекс</li>
+                <li>авторизация через вк</li>
+                <li>вебпак</li>
+                <li>продвинутый тайпскрипт</li>
+            </ul>
         </div>
     )
 }

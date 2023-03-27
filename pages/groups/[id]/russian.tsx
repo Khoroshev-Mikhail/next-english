@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import { updateFetch } from 'lib/fetchesCRUD'
 import useSWRMutation from 'swr/mutation'
 import { useEffect, useState } from 'react'
@@ -24,10 +24,10 @@ export default function Russian(){
     const [ i, setI ] = useState<number>(0)
     const [ isGoodAnswer, setAnswer ] = useState<boolean>(null)
     const [ isMicrophoneOn, setIsMicrophoneOn ] = useState<boolean>(false)
+    const { cache } = useSWRConfig()
     
     const { transcript, listening, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
     const startListening = () => SpeechRecognition.startListening({ language: 'en-US' , continuous: true });
-
 
     async function answer(word_id: number, eng: string){
         setAnswer(data[i].eng == eng ? true : false)
@@ -53,6 +53,7 @@ export default function Russian(){
     }, [isMicrophoneOn])
     useEffect(()=>{
         return () => {
+            cache.delete(`/api/groups/${id}/russian`)
             SpeechRecognition.stopListening()
         }
     }, [])

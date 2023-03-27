@@ -7,7 +7,6 @@ import { Spinner, TextInput } from 'flowbite-react'
 import { AUDING, DELAY } from 'lib/errors'
 import { speechText } from 'lib/fns'
 
-
 export default function Auding(){
     const router = useRouter()
     const { id } = router.query
