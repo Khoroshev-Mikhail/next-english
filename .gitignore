@@ -1,5 +1,6 @@
 node_modules/
 .next/
+/.next/
 .DS_STORE
 .env
 .next/cache/webpack/
