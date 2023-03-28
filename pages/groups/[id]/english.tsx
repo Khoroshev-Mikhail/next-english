@@ -86,3 +86,4 @@ export default function English(){
         </div>
     )
 }
+English.auth = true

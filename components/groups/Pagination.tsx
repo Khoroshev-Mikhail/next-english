@@ -9,7 +9,6 @@ export default function Pagination({ arrayOfAnswers, i } : { arrayOfAnswers: boo
                         <Image src={ !bool ? (bool === null ? '/images/question-mark-circle.svg' :  '/images/x-circle.svg') : '/images/check-circle.svg'} alt='(sound)' width={20} height={20} className="inline"/>
                     </div>
                 )
-            
             })}
         </div>
     )

@@ -18,7 +18,7 @@ export default function Header(){
                 </span>
             </Navbar.Brand>
             <div className="flex md:order-2">
-                <div className="w-[80px] flex justify-end">
+                <div className="w-[80px] h-[40px] flex justify-end">
                 {session?.user.id 
                     ? 
                         <Dropdown arrowIcon={false} inline={true} label={<Avatar alt="User settings" img={session?.user.image} rounded={true} bordered={true} color="success"/>} >

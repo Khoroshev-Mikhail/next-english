@@ -32,6 +32,7 @@ export default function Speaking(){
             const attemptKeyboard = answer.toLocaleUpperCase()
             if(eng === attemptVoice || eng === attemptKeyboard){
                 trigger({ method: SPEAKING, word_id: data[i].id })
+                resetTranscript()
                 setTimeout(() => { 
                     setI(state => state + 1) 
                     resetTranscript()
@@ -58,22 +59,13 @@ export default function Speaking(){
             SpeechRecognition.stopListening()
         }
     }, [isMicrophoneOn])
+    useEffect(()=>{
+        setTimeout(()=>{
+            resetTranscript()
+        }, 1500)
+    }, [transcript])
 
-    // if (!browserSupportsSpeechRecognition) {
-    //     return(
-    //         <div className="w-full sm:w-1/2 mx-auto grid grid-cols-6 p-4 rounded-lg border-2">
-    //             <div className='col-span-6 flex justify-center border-b-2'>
-    //                 <h3 className="text-center text-2xl font-extrabold  p-4">{ (data && data[i]?.rus) || <Spinner /> }</h3>
-    //             </div>
-    //             <div className='col-span-6 flex justify-center border-b-2'>
-    //                 <TextInput value={answer} onChange={(e)=>setAnswer(e.target.value)}/>
-    //             </div>
-    //             <div className='col-span-6 flex justify-center border-b-2'>
-    //                 <button>Следующее слово</button>
-    //             </div>
-    //         </div>
-    //     )
-    // }
+
     return (
         <div className="w-full min-h-[340px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4">
             {isLoading &&
@@ -85,7 +77,7 @@ export default function Speaking(){
             <>
                 <div className='flex justify-end'>
                     {/* сделать анимацию красный микрофон с исходящими кругами */}
-                    <Image src={isMicrophoneOn ? '/images/microphone.svg' : '/images/pause-circle.svg'} alt={isMicrophoneOn ? 'sound ON' : 'sound OFF'} onClick={()=>setIsMicrophoneOn(!isMicrophoneOn)} width={20} height={20} className="cursor-pointer"/>
+                    <Image src={isMicrophoneOn ? '/images/pause-circle.svg' : '/images/microphone.svg'} alt={isMicrophoneOn ? 'sound ON' : 'sound OFF'} onClick={()=>setIsMicrophoneOn(!isMicrophoneOn)} width={20} height={20} className="cursor-pointer"/>
                 </div>
                 <div className='flex justify-center'>
                     <h3 className="text-center text-2xl font-extrabold p-2">
@@ -111,3 +103,4 @@ export default function Speaking(){
         </div>
       );
 }
+Speaking.auth = true

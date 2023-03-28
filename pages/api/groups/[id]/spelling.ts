@@ -11,7 +11,6 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         if(!session?.user.id){
             throw new Error(UNAUTHPRIZED)
         }
-
         const { words: data } = await prisma.group.findUnique({
             where: {
                 id: Number(id)
@@ -32,7 +31,6 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             }
         })
         return res.status(200).json(data.sort(() => Math.random() - 0.5));
-
     }catch(e){
         return res.status(500).send(e.message);
     }

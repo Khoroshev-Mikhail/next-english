@@ -5,11 +5,13 @@ import useSWR from 'swr'
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
+import { signIn, useSession } from "next-auth/react";
 
 export default function Method_card({ method, header } : { method: string, header: string }){
     const router = useRouter()
     const { id } = router.query
     const { data } = useSWR(id ? `/api/groups/${id}/progress` : null)
+    const { data: session } = useSession()
     useEffect(()=>{
         AOS.init()
     }, [])
@@ -27,7 +29,7 @@ export default function Method_card({ method, header } : { method: string, heade
                 { method === 'speaking' && <Progress progress={data?.speaking || 0} label="Произношение" labelPosition="outside"></Progress> }
             </div>
             <div className="col-span-6 py-2 text-center flex justify-center">
-                <Link href={`${id}/${method}`}><Button>Учить!</Button></Link>
+                <Link href={`${id}/${method}`} onClick={ session?.user?.id ? undefined : ()=>signIn() } ><Button>Учить!</Button></Link>
             </div>
         </div>    
     )

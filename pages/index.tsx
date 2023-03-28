@@ -15,6 +15,8 @@ export default function Main(){
             <h1 className='p-4'>Todo</h1>
             <ul className='list-disc list-outside'>
                 <li>смахивание</li>
+                <li>promise all везде</li>
+                <li>страницы nextauth</li>
                 <li>страница пользователя / словаря</li>
                 <li>авторизация через яндекс</li>
                 <li>авторизация через вк</li>

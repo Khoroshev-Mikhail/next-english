@@ -17,7 +17,7 @@ export default function Auding(){
     const { cache } = useSWRConfig()
 
     useEffect(()=>{
-        if(data && data[i]?.eng === answer){
+        if(data && data[i]?.eng.toLowerCase() === answer.toLowerCase()){
             trigger({ method: AUDING, word_id: data[i].id })
             setTimeout(() => { 
                 setI(state => state + 1) 
@@ -42,9 +42,9 @@ export default function Auding(){
         }
     },[])
     return(
-        <div className="w-full min-h-[340px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4">
+        <div className="w-full min-h-[100px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4">
             {isLoading &&
-                <div className='w-full h-full min-h-[270px] flex flex-col justify-center text-center'>
+                <div className='w-full h-full min-h-[90px] flex flex-col justify-center text-center'>
                     <Spinner />
                 </div>
             }
@@ -58,11 +58,13 @@ export default function Auding(){
                 <div className='flex justify-center'>
                     <TextInput value={answer} onChange={(e)=>setAnswer(e.target.value)}/>
                 </div>
-                <div className='flex justify-center'>
+                {/* <div className='flex justify-center'>
                     Пагинация
-                </div>
+                </div> */}
             </>
             }
         </div>
     )
 }
+
+Auding.auth = true

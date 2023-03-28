@@ -23,11 +23,11 @@ export default function Russian(){
     const { trigger } = useSWRMutation(`/api/user/vocabulary/russian/`, updateFetch)
     const [ i, setI ] = useState<number>(0)
     const [ isGoodAnswer, setAnswer ] = useState<boolean>(null)
-    const [ isMicrophoneOn, setIsMicrophoneOn ] = useState<boolean>(false)
+    // const [ isMicrophoneOn, setIsMicrophoneOn ] = useState<boolean>(false)
     const { cache } = useSWRConfig()
     
-    const { transcript, listening, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
-    const startListening = () => SpeechRecognition.startListening({ language: 'en-US' , continuous: true });
+    // const { transcript, listening, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
+    // const startListening = () => SpeechRecognition.startListening({ language: 'en-US' , continuous: true });
 
     async function answer(word_id: number, eng: string){
         setAnswer(data[i].eng == eng ? true : false)
@@ -43,20 +43,37 @@ export default function Russian(){
     useEffect(()=>{
         setI(0)
     }, [ data ])
-    useEffect(()=>{
-        if(isMicrophoneOn){
-            startListening()
-        }
-        if(!isMicrophoneOn){
-            SpeechRecognition.stopListening()
-        }
-    }, [isMicrophoneOn])
+    // useEffect(()=>{
+    //     if(isMicrophoneOn){
+    //         startListening()
+    //     }
+    //     if(!isMicrophoneOn){
+    //         SpeechRecognition.stopListening()
+    //     }
+    // }, [isMicrophoneOn])
     useEffect(()=>{
         return () => {
             cache.delete(`/api/groups/${id}/russian`)
-            SpeechRecognition.stopListening()
+            // SpeechRecognition.stopListening()
         }
     }, [])
+    // useEffect(()=>{
+    //     if(data && transcript.split(' ').at(-1).toLowerCase() == data[i].eng.toLowerCase()){
+    //         setAnswer(true)
+    //         resetTranscript()
+    //         speechText(data[i].eng)
+    //         trigger({ method: RUSSIAN, word_id: data[i].id })
+    //         setTimeout(() => {
+    //             setI(state => state + 1)
+    //             setAnswer(null)
+    //         }, DELAY)
+    //     }
+    // }, [transcript, isMicrophoneOn, data, i])
+    // useEffect(()=>{
+    //     setTimeout(()=>{
+    //         resetTranscript()
+    //     }, 1500)
+    // }, [transcript])
     return(
         <div className="w-full min-h-[340px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4">
             {isLoading &&
@@ -66,11 +83,11 @@ export default function Russian(){
             }
             {!isLoading && data &&
             <>
-                <div className='flex justify-end'>
-                    {transcript.split(' ').at(-1)}
+                {/* <div className='flex justify-end'> */}
+                    {/* {transcript.split(' ').at(-1)} */}
                     {/* сделать анимацию красный микрофон с исходящими кругами */}
-                    <Image src={isMicrophoneOn ? '/images/pause-circle.svg' : '/images/microphone.svg'} alt={isMicrophoneOn ? 'sound ON' : 'sound OFF'} onClick={()=>setIsMicrophoneOn(!isMicrophoneOn)} width={20} height={20} className="cursor-pointer"/>
-                </div>
+                    {/* <Image src={isMicrophoneOn ? '/images/pause-circle.svg' : '/images/microphone.svg'} alt={isMicrophoneOn ? 'sound ON' : 'sound OFF'} onClick={()=>setIsMicrophoneOn(!isMicrophoneOn)} width={20} height={20} className="cursor-pointer"/> */}
+                {/* </div> */}
                 <div className='flex justify-center'>
                     <h3 className="text-center text-2xl font-extrabold p-2">
                         { data && data[i].rus }
@@ -92,3 +109,5 @@ export default function Russian(){
         </div>
     )
 }
+
+Russian.auth = true
