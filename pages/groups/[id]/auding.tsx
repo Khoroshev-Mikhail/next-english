@@ -48,7 +48,13 @@ export default function Auding(){
                     <Spinner />
                 </div>
             }
-            {!isLoading && data &&
+            {/* вынести в компонент */}
+            {data && data.length === 0 && 
+                <h3 className="text-center text-2xl font-extrabold p-2">
+                    Все слова выучены
+                </h3>
+            }
+            {!isLoading && data && data.length > 0 && 
             <>
                 <div className='flex justify-center'>
                     <h3 className="text-center text-2xl font-extrabold p-2">

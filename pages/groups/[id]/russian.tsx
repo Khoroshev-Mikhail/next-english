@@ -81,7 +81,12 @@ export default function Russian(){
                     <Spinner />
                 </div>
             }
-            {!isLoading && data &&
+            {data && data.length === 0 && 
+                <h3 className="text-center text-2xl font-extrabold p-2">
+                    Все слова выучены
+                </h3>
+            }
+            {!isLoading && data && data.length > 0 && 
             <>
                 {/* <div className='flex justify-end'> */}
                     {/* {transcript.split(' ').at(-1)} */}

@@ -3,6 +3,7 @@ import 'tailwindcss/tailwind.css'
 import { SWRConfig } from "swr/_internal";
 import { SessionProvider, useSession } from "next-auth/react"
 import Layout from 'components/layout/Layout';
+import { Spinner } from 'flowbite-react';
 
 const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   return (
@@ -29,7 +30,7 @@ function Auth({ children }) {
   const { status } = useSession({ required: true })
   if (status === "loading") {
     return (
-      <div>loading</div>
+      <div><Spinner /></div>
     )
   }
   return children
