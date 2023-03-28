@@ -7,17 +7,20 @@ import { DELAY, ENGLISH } from 'lib/errors'
 import { speechText } from 'lib/fns'
 import Image from 'next/image'
 import { Spinner } from 'flowbite-react'
+import Pagination from 'components/groups/Pagination'
 
 type Data = { id: number, eng: string, rus: string, answers: string[] }
 export default function English(){
     const router = useRouter()
     const { id } = router.query
+    const { cache } = useSWRConfig()
+    
     const { data, error, isLoading, isValidating } = useSWR<Data[]>(id ? `/api/groups/${id}/english` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/english/`, updateFetch)
     const [ i, setI ] = useState<number>(0)
+    const [ answers, setAnswers ] = useState<boolean[]>([])
     const [ isGoodAnswer, setAnswer ] = useState<boolean>(null)
     const [ isMicrophoneOn, setIsMicrophoneOn ] = useState<boolean>(true)
-    const { cache } = useSWRConfig()
     
     useEffect(()=>{
         setI(0)
@@ -38,9 +41,11 @@ export default function English(){
     async function answer(word_id: number, rus: string){
         setAnswer(data[i].rus == rus ? true : false)
         if(data[i].rus === rus){
+            setAnswers(state => state.concat(true))
             trigger({ method: ENGLISH, word_id })
+        }else{
+            setAnswers(state => state.concat(false))
         }
-        //audio
         setTimeout(() => {
             setI(state => state + 1)
             setAnswer(null)
@@ -58,13 +63,14 @@ export default function English(){
                 </div>
             }
             {!isLoading && data &&
-            <>
+            <>  
+                {/* <Pagination arrayOfAnswers={answers} i={i} /> */}
                 <div className='cursor-pointer flex justify-center' onClick={()=>speechText(data[i]?.eng)}>
                 <h3 className="text-center text-2xl font-extrabold p-2">
-                    { data && data[i].eng }  <Image src={'/images/speaker-wave.svg'} alt='(sound)' width={20} height={20} className="inline"/>
+                    { data && data[i]?.eng } <Image src={'/images/speaker-wave.svg'} alt='(sound)' width={20} height={20} className="inline"/>
                 </h3>
                 </div>
-                { data && data[i].answers.map((rus, i) => {
+                { data && data[i]?.answers.map((rus, i) => {
                     return (
                         <button
                             key={i}

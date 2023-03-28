@@ -12,14 +12,33 @@ export default function Main(){
     },[session])
     return(
         <div className="">
-            <h1>todo</h1>
-            <ul>
-                <li>Пагинация для методов изучения слов</li>
+            <h1 className='p-4'>Todo</h1>
+            <ul className='list-disc list-outside'>
+                <li>смахивание</li>
                 <li>страница пользователя / словаря</li>
                 <li>авторизация через яндекс</li>
                 <li>авторизация через вк</li>
+                <li>анимации
+                    <ul className='list-decimal'>
+                        <li>пагинации</li>
+                        <li>прогессбаров(медленно растягивались) + спиннер или другая заглушка когда данные подргружаются</li>
+                    </ul>
+                </li>
                 <li>вебпак</li>
                 <li>продвинутый тайпскрипт</li>
+            </ul>
+            <h1 className='p-4'>Можно добавить</h1>
+            <ul className='list-disc'>
+            <li>Пагинация для методов изучения слов
+                    <ul className='list-decimal'>
+                        <li>Верстка</li>
+                        <li>Кликабельность кнопок</li>
+                    </ul>
+                </li>
+            </ul>
+            <h1 className='p-4'>Errors</h1>
+            <ul className='list-disc'>
+                <li>На странице english и аналогичных: когда остается мало НЕизученных слов вариантов ответов тоже предлагается несколько</li>
             </ul>
         </div>
     )

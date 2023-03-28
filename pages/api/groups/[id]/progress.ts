@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         }
         const { id } = req.query
         if(req.method === "GET"){
-            const { _count: { words: english } } = await prisma.group.findUnique({
+            const english_promise = prisma.group.findUnique({
                 where: {
                     id: Number(id)
                 },
@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     },
                 },
             })
-            const { _count: { words: russian } } = await prisma.group.findUnique({
+            const russian_promise = prisma.group.findUnique({
                 where: {
                     id: Number(id)
                 },
@@ -48,7 +48,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     },
                 },
             })
-            const { _count: { words: speaking } } = await prisma.group.findUnique({
+            const speaking_promise = prisma.group.findUnique({
                 where: {
                     id: Number(id)
                 },
@@ -66,7 +66,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     },
                 },
             })
-            const { _count: { words: auding } } = await prisma.group.findUnique({
+            const auding_promise = prisma.group.findUnique({
                 where: {
                     id: Number(id)
                 },
@@ -84,7 +84,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     },
                 },
             })
-            const {_count: { words : total } } = await prisma.group.findUnique({
+            const total_promise = prisma.group.findUnique({
                 where: {
                     id: Number(id)
                 },
@@ -92,15 +92,23 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     _count: true,
                 },
             })
+            const result_promise = await Promise.all([english_promise, russian_promise, speaking_promise, auding_promise, total_promise])
+            
+            const { _count: { words: english } } = result_promise[0]
+            const { _count: { words: russian } } = result_promise[1]
+            const { _count: { words: speaking } } = result_promise[2]
+            const { _count: { words: auding } } = result_promise[3]
+            const { _count: { words: total } } = result_promise[4]
+
             const result = {
                 english: (total - english) * (100 / total),
                 russian: (total - russian) * (100 / total),
                 auding: (total - auding) * (100 / total),
                 speaking: (total - speaking) * (100 / total),
-            }    
+                count_words: total
+            }  
             return res.status(200).json(result); 
         }
-        // Количество слов из этой группы выученной пользователем метолом english / на количество слов в группе
     }catch(e){
         return res.status(500).json(e.message);
     }

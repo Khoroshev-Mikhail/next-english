@@ -10,7 +10,7 @@ export default function Header(){
     const { data: session } = useSession()
     const { pathname } = useRouter()
     return (
-        <Navbar className="py-5 shadow-md">
+        <Navbar className="py-5 shadow-md h-20">
             <Navbar.Brand as={Link} href="/">
                 <Image src={logo.src} width={50} height={40} alt='logo'/>
                 <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
@@ -18,6 +18,7 @@ export default function Header(){
                 </span>
             </Navbar.Brand>
             <div className="flex md:order-2">
+                <div className="w-[80px] flex justify-end">
                 {session?.user.id 
                     ? 
                         <Dropdown arrowIcon={false} inline={true} label={<Avatar alt="User settings" img={session?.user.image} rounded={true} bordered={true} color="success"/>} >
@@ -38,8 +39,9 @@ export default function Header(){
                             </Dropdown.Item>
                         </Dropdown>
                     : 
-                        <Button onClick={()=>signIn()}>Войти</Button>
+                        <Button className="h-[40px]" onClick={()=>signIn()}>Войти</Button>
                 }
+                </div>
                 <Navbar.Toggle />
             </div>
             <Navbar.Collapse >
