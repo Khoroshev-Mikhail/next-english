@@ -3,9 +3,10 @@ import useSWR, { useSWRConfig } from 'swr'
 import { updateFetch } from 'lib/fetchesCRUD'
 import useSWRMutation from 'swr/mutation'
 import { useEffect, useState } from 'react'
-import { Spinner, TextInput } from 'flowbite-react'
+import { Button, Spinner, TextInput } from 'flowbite-react'
 import { AUDING, DELAY } from 'lib/errors'
 import { speechText } from 'lib/fns'
+import Image from 'next/image'
 
 export default function Auding(){
     const router = useRouter()
@@ -64,9 +65,14 @@ export default function Auding(){
                 <div className='flex justify-center'>
                     <TextInput value={answer} onChange={(e)=>setAnswer(e.target.value)}/>
                 </div>
-                {/* <div className='flex justify-center'>
-                    Пагинация
-                </div> */}
+                <div className='flex justify-between mt-2'>
+                    <Button color='gray' onClick={()=>{ setI(i => i - 1)}} disabled={i <= 0}>
+                        <Image src={'/images/arrow-left.svg'} alt='<' width={20} height={20}/>
+                    </Button>
+                    <Button color='gray' onClick={()=>{ setI(i => i + 1)}} disabled={i >= data.length - 1}>
+                        <Image src={'/images/arrow-right.svg'} alt='<' width={20} height={20}/>
+                    </Button>
+                </div>
             </>
             }
         </div>

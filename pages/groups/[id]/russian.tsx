@@ -4,76 +4,48 @@ import { updateFetch } from 'lib/fetchesCRUD'
 import useSWRMutation from 'swr/mutation'
 import { useEffect, useState } from 'react'
 import { DELAY, RUSSIAN } from 'lib/errors'
-import { speechText } from 'lib/fns'
-import { Spinner } from 'flowbite-react'
+import { Button, Spinner } from 'flowbite-react'
 import Image from 'next/image'
-import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-polyfill';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
-const APP_ID = "5f4e33d5-c05f-4e56-928e-36257a6661b0"
-const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(APP_ID);
-SpeechRecognition.applyPolyfill(SpeechlySpeechRecognition);
 
 type Data = { id: number, eng: string, rus: string, answers: string[] }
 
 export default function Russian(){
     const router = useRouter()
     const { id } = router.query
+    const { cache } = useSWRConfig()
+
     const { data, error, isLoading, isValidating } = useSWR<Data[]>(id ? `/api/groups/${id}/russian` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/russian/`, updateFetch)
     const [ i, setI ] = useState<number>(0)
-    const [ isGoodAnswer, setAnswer ] = useState<boolean>(null)
-    // const [ isMicrophoneOn, setIsMicrophoneOn ] = useState<boolean>(false)
-    const { cache } = useSWRConfig()
+    const [ goodAnswers, setGoodAnswers ] = useState<number[]>([])
+    const [ badAnswers, setBadAnswers ] = useState<number[]>([])
     
-    // const { transcript, listening, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
-    // const startListening = () => SpeechRecognition.startListening({ language: 'en-US' , continuous: true });
-
-    async function answer(word_id: number, eng: string){
-        setAnswer(data[i].eng == eng ? true : false)
-        if(data[i].eng === eng){
-            speechText(data[i].eng)
+    function attempt(word_id: number, eng: string){
+        if(data[i].eng.toLowerCase() === eng.toLowerCase()){
             trigger({ method: RUSSIAN, word_id })
+            setGoodAnswers(state => state.concat(word_id))
+        }
+        if(data[i].eng.toLowerCase() !== eng.toLowerCase()){
+            setBadAnswers(state => state.concat(word_id))
         }
         setTimeout(() => {
             setI(state => state + 1)
-            setAnswer(null)
         }, DELAY)
-    }    
+    }  
+
     useEffect(()=>{
         setI(0)
+        setGoodAnswers([])
+        setBadAnswers([])
     }, [ data ])
-    // useEffect(()=>{
-    //     if(isMicrophoneOn){
-    //         startListening()
-    //     }
-    //     if(!isMicrophoneOn){
-    //         SpeechRecognition.stopListening()
-    //     }
-    // }, [isMicrophoneOn])
+
     useEffect(()=>{
         return () => {
             cache.delete(`/api/groups/${id}/russian`)
-            // SpeechRecognition.stopListening()
         }
-    }, [])
-    // useEffect(()=>{
-    //     if(data && transcript.split(' ').at(-1).toLowerCase() == data[i].eng.toLowerCase()){
-    //         setAnswer(true)
-    //         resetTranscript()
-    //         speechText(data[i].eng)
-    //         trigger({ method: RUSSIAN, word_id: data[i].id })
-    //         setTimeout(() => {
-    //             setI(state => state + 1)
-    //             setAnswer(null)
-    //         }, DELAY)
-    //     }
-    // }, [transcript, isMicrophoneOn, data, i])
-    // useEffect(()=>{
-    //     setTimeout(()=>{
-    //         resetTranscript()
-    //     }, 1500)
-    // }, [transcript])
+    }, [ ])
+
     return(
         <div className="w-full min-h-[340px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4">
             {isLoading &&
@@ -88,27 +60,31 @@ export default function Russian(){
             }
             {!isLoading && data && data.length > 0 && 
             <>
-                {/* <div className='flex justify-end'> */}
-                    {/* {transcript.split(' ').at(-1)} */}
-                    {/* сделать анимацию красный микрофон с исходящими кругами */}
-                    {/* <Image src={isMicrophoneOn ? '/images/pause-circle.svg' : '/images/microphone.svg'} alt={isMicrophoneOn ? 'sound ON' : 'sound OFF'} onClick={()=>setIsMicrophoneOn(!isMicrophoneOn)} width={20} height={20} className="cursor-pointer"/> */}
-                {/* </div> */}
                 <div className='flex justify-center'>
                     <h3 className="text-center text-2xl font-extrabold p-2">
-                        { data && data[i].rus }
+                        { data && data[i]?.rus }
                     </h3>
                 </div>
-                { data && data[i].answers.map((eng, i) => {
+                {data[i].answers.map((eng, index) => {
                     return (
                         <button
-                            key={i}
-                            onClick={ (e)=> answer(data[i].id, eng)}
-                            className={`${isGoodAnswer === false && 'bg-red-500'} ${isGoodAnswer === true && 'bg-sky-500'} block shadow-md h-12 my-2 border-solid duration-500 border-2 text-lg font-medium rounded-md outline-none`}
+                            disabled={ badAnswers.includes(data[i].id) || goodAnswers.includes(data[i].id) }
+                            key={index}
+                            onClick={ ()=> attempt(data[i].id, eng) }
+                            className={`${badAnswers.includes(data[i].id) && data[i].eng.toLowerCase() != eng.toLowerCase() && 'bg-red-500'} ${goodAnswers.includes(data[i].id) && data[i].eng.toLowerCase() == eng.toLowerCase() && 'bg-green-500'} block  h-12 my-2 border-solid duration-500 border text-lg font-medium rounded-md outline-none`}
                         >
                             {eng}
                         </button>
                     )
                 })}
+                <div className='flex justify-between mt-2'>
+                    <Button color='gray' onClick={()=>{ setI(i => i - 1)}} disabled={i <= 0}>
+                        <Image src={'/images/arrow-left.svg'} alt='<' width={20} height={20}/>
+                    </Button>
+                    <Button color='gray' onClick={()=>{ setI(i => i + 1)}} disabled={i >= data.length - 1}>
+                        <Image src={'/images/arrow-right.svg'} alt='<' width={20} height={20}/>
+                    </Button>
+                </div>
             </>
             }
         </div>

@@ -21,25 +21,7 @@ export default function English(){
     const [ goodAnswers, setGoodAnswers ] = useState<number[]>([])
     const [ badAnswers, setBadAnswers ] = useState<number[]>([])
     
-    useEffect(()=>{
-        setI(0)
-        setGoodAnswers([])
-        setBadAnswers([])
-    }, [data])
-
-    useEffect(()=>{
-        if(data && data[i]){
-            speechText(data[i].eng)
-        }
-    }, [i, data])
-
-    useEffect(()=>{
-        return () => {
-            cache.delete(`/api/groups/${id}/english`)
-        }
-    },[])
-
-    async function attempt(word_id: number, rus: string){
+    function attempt(word_id: number, rus: string){
         if(data[i].rus.toLowerCase() === rus.toLowerCase()){
             trigger({ method: ENGLISH, word_id })
             setGoodAnswers(state => state.concat(word_id))
@@ -51,6 +33,22 @@ export default function English(){
             setI(state => state + 1)
         }, DELAY)
     }
+    
+    useEffect(()=>{
+        setI(0)
+        setGoodAnswers([])
+        setBadAnswers([])
+    }, [ data ])
+    useEffect(()=>{
+        if(data && data[i]){
+            speechText(data[i].eng)
+        }
+    }, [ i, data ])
+    useEffect(()=>{
+        return () => {
+            cache.delete(`/api/groups/${id}/english`)
+        }
+    },[ ])
 
     return(
         <div className="w-full min-h-[354px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4">
@@ -67,16 +65,16 @@ export default function English(){
             {!isLoading && data && data.length > 0 &&
             <>  
                 <div className='cursor-pointer flex justify-center' onClick={()=>speechText(data[i]?.eng)}>
-                <h3 className="text-center text-2xl font-extrabold p-2">
-                    { data && data[i]?.eng } <Image src={'/images/speaker-wave.svg'} alt='(sound)' width={20} height={20} className="inline"/>
-                </h3>
+                    <h3 className="text-center text-2xl font-extrabold p-2">
+                        { data && data[i]?.eng } <Image src={'/images/speaker-wave.svg'} alt='(sound)' width={20} height={20} className="inline"/>
+                    </h3>
                 </div>
-                { data && data[i]?.answers.map((rus, index) => {
+                {data[i].answers.map((rus, index) => {
                     return (
                         <button
-                            disabled={ badAnswers.includes(data[i].id) || goodAnswers.includes(data[i].id)}
+                            disabled={ badAnswers.includes(data[i].id) || goodAnswers.includes(data[i].id) }
                             key={index}
-                            onClick={ (e)=> attempt(data[i].id, rus)}
+                            onClick={ ()=> attempt(data[i].id, rus) }
                             className={`${badAnswers.includes(data[i].id) && data[i].rus.toLowerCase() != rus.toLowerCase() && 'bg-red-500'} ${goodAnswers.includes(data[i].id) && data[i].rus.toLowerCase() == rus.toLowerCase() && 'bg-green-500'} block  h-12 my-2 border-solid duration-500 border text-lg font-medium rounded-md outline-none`}
                         >
                             {rus}
