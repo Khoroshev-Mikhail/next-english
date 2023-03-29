@@ -9,6 +9,7 @@ import Image from 'next/image'
 import { Button, Spinner } from 'flowbite-react'
 
 type Data = { id: number, eng: string, rus: string, answers: string[] }
+
 export default function English(){
     const router = useRouter()
     const { id } = router.query
@@ -17,11 +18,13 @@ export default function English(){
     const { data, error, isLoading, isValidating } = useSWR<Data[]>(id ? `/api/groups/${id}/english` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/english/`, updateFetch)
     const [ i, setI ] = useState<number>(0)
-    const [ answers, setAnswers ] = useState([])
-    const [ isGoodAnswer, setAnswer ] = useState<boolean>(null)
+    const [ goodAnswers, setGoodAnswers ] = useState<number[]>([])
+    const [ badAnswers, setBadAnswers ] = useState<number[]>([])
     
     useEffect(()=>{
         setI(0)
+        setGoodAnswers([])
+        setBadAnswers([])
     }, [data])
 
     useEffect(()=>{
@@ -36,15 +39,16 @@ export default function English(){
         }
     },[])
 
-    async function answer(word_id: number, rus: string){
-        setAnswer(data[i].rus == rus ? true : false)
-        if(data[i].rus === rus){
-            setAnswers(arr => arr.concat(word_id))
+    async function attempt(word_id: number, rus: string){
+        if(data[i].rus.toLowerCase() === rus.toLowerCase()){
             trigger({ method: ENGLISH, word_id })
+            setGoodAnswers(state => state.concat(word_id))
+        }
+        if(data[i].rus.toLowerCase() !== rus.toLowerCase()){
+            setBadAnswers(state => state.concat(word_id))
         }
         setTimeout(() => {
             setI(state => state + 1)
-            setAnswer(null)
         }, DELAY)
     }
 
@@ -70,10 +74,10 @@ export default function English(){
                 { data && data[i]?.answers.map((rus, index) => {
                     return (
                         <button
-                            disabled={answers.includes(data[i].id)}
+                            disabled={ badAnswers.includes(data[i].id) || goodAnswers.includes(data[i].id)}
                             key={index}
-                            onClick={ (e)=> answer(data[i].id, rus)}
-                            className={`${isGoodAnswer === false && 'bg-red-500'} ${isGoodAnswer === true && 'bg-sky-500'} block  h-12 my-2 border-solid duration-500 border text-lg font-medium rounded-md outline-none`}
+                            onClick={ (e)=> attempt(data[i].id, rus)}
+                            className={`${badAnswers.includes(data[i].id) && data[i].rus.toLowerCase() != rus.toLowerCase() && 'bg-red-500'} ${goodAnswers.includes(data[i].id) && data[i].rus.toLowerCase() == rus.toLowerCase() && 'bg-green-500'} block  h-12 my-2 border-solid duration-500 border text-lg font-medium rounded-md outline-none`}
                         >
                             {rus}
                         </button>
