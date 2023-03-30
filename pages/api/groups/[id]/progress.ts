@@ -110,6 +110,6 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             return res.status(200).json(result); 
         }
     }catch(e){
-        return res.status(500).json(e.message);
+        return res.status(500).send(e.message);
     }
 }

@@ -3,7 +3,7 @@ import useSWR, { useSWRConfig } from 'swr'
 import { updateFetch } from 'lib/fetchesCRUD'
 import useSWRMutation from 'swr/mutation'
 import { useEffect, useState } from 'react'
-import { DELAY, ENGLISH } from 'lib/errors'
+import { BG_SUCCESS, DELAY, ENGLISH } from 'lib/errors'
 import { speechText } from 'lib/fns'
 import Image from 'next/image'
 import { Button, Spinner } from 'flowbite-react'
@@ -15,7 +15,7 @@ export default function English(){
     const { id } = router.query
     const { cache } = useSWRConfig()
     
-    const { data, error, isLoading, isValidating } = useSWR<Data[]>(id ? `/api/groups/${id}/english` : null)
+    const { data, error, isLoading, isValidating, mutate } = useSWR<Data[]>(id ? `/api/groups/${id}/english` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/english/`, updateFetch)
     const [ i, setI ] = useState<number>(0)
     const [ goodAnswers, setGoodAnswers ] = useState<number[]>([])
@@ -23,6 +23,8 @@ export default function English(){
     
     function attempt(word_id: number, rus: string){
         if(data[i].rus.toLowerCase() === rus.toLowerCase()){
+            const success_ring = new Audio('/audio/success.mp3')
+            success_ring.play()
             trigger({ method: ENGLISH, word_id })
             setGoodAnswers(state => state.concat(word_id))
         }
@@ -30,7 +32,15 @@ export default function English(){
             setBadAnswers(state => state.concat(word_id))
         }
         setTimeout(() => {
-            setI(state => state + 1)
+            if(i < data.length - 1){
+                setI(state => state + 1)
+            } 
+            else if(new Set(goodAnswers).size + new Set(badAnswers).size < data.length){
+                const index = data.findIndex(el => !goodAnswers.includes(el.id) && !badAnswers.includes(el.id))
+                if(index >= 0){
+                    setI(index)
+                }
+            } 
         }, DELAY)
     }
     
@@ -51,7 +61,7 @@ export default function English(){
     },[ ])
 
     return(
-        <div className="w-full min-h-[354px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4">
+        <div className={`${data && goodAnswers.includes(data[i]?.id) && BG_SUCCESS} w-full min-h-[354px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
             {isLoading &&
                 <div className='w-full h-full min-h-[354px] flex flex-col justify-center text-center'>
                     <Spinner />

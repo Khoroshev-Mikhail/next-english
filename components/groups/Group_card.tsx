@@ -24,7 +24,7 @@ export default function Group_card({ id, eng, rus, _count } : { id: number, eng:
                     <Progress progress={data?.english || 0} label="Перевод с Английского" labelPosition="outside"></Progress>
                     <Progress progress={data?.russian || 0} label="Перевод с Русского" labelPosition="outside"></Progress>
                     <Progress progress={data?.auding || 0} label="Аудирование" labelPosition="outside"></Progress>
-                    <Progress progress={data?.spelling || 0} label="Произношение" labelPosition="outside"></Progress>
+                    <Progress progress={data?.speaking || 0} label="Произношение" labelPosition="outside"></Progress>
                 </div>
             }
             <div className="col-span-6 pt-2 text-center flex justify-center">

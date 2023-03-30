@@ -3,11 +3,12 @@ import useSWR from 'swr'
 import { updateFetch } from 'lib/fetchesCRUD'
 import useSWRMutation from 'swr/mutation'
 import { useEffect, useState } from 'react'
-import { Spinner, TextInput } from 'flowbite-react'
-import { AUDING, DELAY, SPEAKING } from 'lib/errors'
+import { Button, Spinner, TextInput } from 'flowbite-react'
+import { AUDING, BG_SUCCESS, DELAY, SPEAKING } from 'lib/errors'
 import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-polyfill';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import Image from 'next/image'
+import { speechText } from 'lib/fns'
 
 const APP_ID = "5f4e33d5-c05f-4e56-928e-36257a6661b0"
 const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(APP_ID);
@@ -20,6 +21,7 @@ export default function Speaking(){
     const { trigger } = useSWRMutation(`/api/user/vocabulary/speaking/`, updateFetch)
     const [ i, setI ] = useState<number>(0)
     const [ answer, setAnswer ] = useState<string>('')
+    const [ goodAnswers, setGoodAnswers ] = useState<number[]>([])
     const [ isMicrophoneOn, setIsMicrophoneOn ] = useState<boolean>(true)
     
     const { transcript, listening, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
@@ -31,45 +33,53 @@ export default function Speaking(){
             const attemptVoice = transcript.split(' ').at(-1).toLocaleUpperCase()
             const attemptKeyboard = answer.toLocaleUpperCase()
             if(eng === attemptVoice || eng === attemptKeyboard){
+                const success_ring = new Audio('/audio/success.mp3')
+                success_ring.play()
+                setGoodAnswers(state => state.concat(data[i].id))
                 trigger({ method: SPEAKING, word_id: data[i].id })
-                resetTranscript()
                 setTimeout(() => { 
-                    setI(state => state + 1) 
-                    resetTranscript()
+                    if(i < data.length - 1){
+                        setI(state => state + 1)
+                    }
                 }, DELAY)
             }
         }
     }, [answer, data, i, transcript])
-
     useEffect(()=>{
         setI(0)
-    }, [data])
-
+        resetTranscript()
+    }, [ data ])
+    useEffect(()=>{
+        resetTranscript()
+    }, [ i ])
     useEffect(()=>{
         startListening()
         return () => {
             SpeechRecognition.stopListening()
+            resetTranscript()
         }
     }, [])
     useEffect(()=>{
         if(isMicrophoneOn){
+            resetTranscript()
             startListening()
         }
         if(!isMicrophoneOn){
             SpeechRecognition.stopListening()
+            resetTranscript()
         }
     }, [isMicrophoneOn])
-    useEffect(()=>{
-        setTimeout(()=>{
-            resetTranscript()
-        }, 1500)
-    }, [transcript])
+    // useEffect(()=>{
+    //     setTimeout(()=>{
+    //         resetTranscript()
+    //     }, 3000) //перепиши на timestamp - это не правильно. Таймер запустился, а слово все еще меняется...
+    // }, [transcript])
 
 
     return (
-        <div className="w-full min-h-[340px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4">
+        <div className={`${data && goodAnswers.includes(data[i]?.id) && BG_SUCCESS} w-full min-h-[354px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
             {isLoading &&
-                <div className='w-full h-full min-h-[270px] flex flex-col justify-center text-center'>
+                <div className='w-full h-full min-h-[354px] flex flex-col justify-center text-center'>
                     <Spinner />
                 </div>
             }
@@ -80,28 +90,28 @@ export default function Speaking(){
             }
             {!isLoading && data && data.length > 0 && 
             <>
-                <div className='flex justify-end'>
+                <div className='flex justify-center'>
                     {/* сделать анимацию красный микрофон с исходящими кругами */}
                     <Image src={isMicrophoneOn ? '/images/pause-circle.svg' : '/images/microphone.svg'} alt={isMicrophoneOn ? 'sound ON' : 'sound OFF'} onClick={()=>setIsMicrophoneOn(!isMicrophoneOn)} width={20} height={20} className="cursor-pointer"/>
                 </div>
-                <div className='flex justify-center'>
+                <div className='flex justify-center cursor-pointer' onClick={()=>speechText(data[i].eng)}>
                     <h3 className="text-center text-2xl font-extrabold p-2">
-                        { data && data[i].rus }
+                        { data[i]?.rus } <Image src={'/images/speaker-wave.svg'} alt='(sound)' width={20} height={20} className="inline"/>
                     </h3>
                 </div>
-                <div className='col-span-6'>
-                    Microphone: {listening ? 'on' : 'off'}
+                <div className='flex justify-between'>
+                    <Button color='gray' onClick={()=>{ setI(i => i - 1)}} disabled={i <= 0}>
+                        <Image src={'/images/arrow-left.svg'} alt='<' width={20} height={20}/>
+                    </Button>
+                    <Button color='gray' onClick={()=>{ setI(i => i + 1)}} disabled={i >= data.length - 1}>
+                        <Image src={'/images/arrow-right.svg'} alt='<' width={20} height={20}/>
+                    </Button>
                 </div>
-                <div className='col-span-6'>
-                    {data && data.length > 0 && i > 0 &&
-                        <button onClick={()=>setI(i => i - 1)}>prev</button>
-                    }
-                    {data && data.length > 0 && i < data.length - 2 &&
-                        <button onClick={()=>setI(i => i + 1)}>next</button>
-                    }
-                </div>
-                <div className='col-span-6'>
-                    {transcript.split(' ').at(-1)}
+                <div className='flex justify-center'>
+                    <h3 className="text-center text-2xl font-extrabold p-2 truncate text-left">
+                        {transcript.split(' ').at(-1)}
+                        {/* сделать div с обрезанием текста */}
+                    </h3>
                 </div>
             </>
             }

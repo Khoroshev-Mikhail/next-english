@@ -3,7 +3,7 @@ import useSWR, { useSWRConfig } from 'swr'
 import { updateFetch } from 'lib/fetchesCRUD'
 import useSWRMutation from 'swr/mutation'
 import { useEffect, useState } from 'react'
-import { DELAY, RUSSIAN } from 'lib/errors'
+import { BG_SUCCESS, DELAY, RUSSIAN } from 'lib/errors'
 import { Button, Spinner } from 'flowbite-react'
 import Image from 'next/image'
 
@@ -14,7 +14,6 @@ export default function Russian(){
     const router = useRouter()
     const { id } = router.query
     const { cache } = useSWRConfig()
-
     const { data, error, isLoading, isValidating } = useSWR<Data[]>(id ? `/api/groups/${id}/russian` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/russian/`, updateFetch)
     const [ i, setI ] = useState<number>(0)
@@ -23,6 +22,8 @@ export default function Russian(){
     
     function attempt(word_id: number, eng: string){
         if(data[i].eng.toLowerCase() === eng.toLowerCase()){
+            const success_ring = new Audio('/audio/success.mp3')
+            success_ring.play()
             trigger({ method: RUSSIAN, word_id })
             setGoodAnswers(state => state.concat(word_id))
         }
@@ -30,7 +31,9 @@ export default function Russian(){
             setBadAnswers(state => state.concat(word_id))
         }
         setTimeout(() => {
-            setI(state => state + 1)
+            if(i < data.length - 1){
+                setI(state => state + 1)
+            }
         }, DELAY)
     }  
 
@@ -47,7 +50,7 @@ export default function Russian(){
     }, [ ])
 
     return(
-        <div className="w-full min-h-[340px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4">
+        <div className={`${data && goodAnswers.includes(data[i]?.id) && BG_SUCCESS} w-full min-h-[340px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
             {isLoading &&
                 <div className='w-full h-full min-h-[270px] flex flex-col justify-center text-center'>
                     <Spinner />
@@ -65,7 +68,7 @@ export default function Russian(){
                         { data && data[i]?.rus }
                     </h3>
                 </div>
-                {data[i].answers.map((eng, index) => {
+                {data[i]?.answers.map((eng, index) => {
                     return (
                         <button
                             disabled={ badAnswers.includes(data[i].id) || goodAnswers.includes(data[i].id) }
