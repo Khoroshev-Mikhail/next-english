@@ -6,7 +6,7 @@ import { useState } from 'react'
 import useSWR from 'swr'
 
 export default function Admin_words(){
-    const { data, error, isLoading } = useSWR<(Word & { group_ids : { id: number }[] })[]>(`/api/admin/words`)
+    const { data, error, isLoading } = useSWR(`/api/admin/words`)
     const [ comparator, setComparator ] = useState<{fn: any, increase: boolean}>({fn: sortWordById, increase: true})
     const [ filter, setFilter ] = useState<string>('')
 
