@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         }
         const { id } = req.query
         if(req.method === "GET"){
-            const english_promise = prisma.group.findUnique({
+            const english_promise = await prisma.group.findUnique({
                 where: {
                     id: Number(id)
                 },
@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     },
                 },
             })
-            const russian_promise = prisma.group.findUnique({
+            const russian_promise = await prisma.group.findUnique({
                 where: {
                     id: Number(id)
                 },
@@ -48,7 +48,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     },
                 },
             })
-            const speaking_promise = prisma.group.findUnique({
+            const speaking_promise = await prisma.group.findUnique({
                 where: {
                     id: Number(id)
                 },
@@ -66,7 +66,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     },
                 },
             })
-            const auding_promise = prisma.group.findUnique({
+            const auding_promise = await prisma.group.findUnique({
                 where: {
                     id: Number(id)
                 },
@@ -84,7 +84,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     },
                 },
             })
-            const total_promise = prisma.group.findUnique({
+            const total_promise = await prisma.group.findUnique({
                 where: {
                     id: Number(id)
                 },
@@ -101,10 +101,10 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             const { _count: { words: total } } = result_promise[4]
 
             const result = {
-                english: (total - english) * (100 / total),
-                russian: (total - russian) * (100 / total),
-                auding: (total - auding) * (100 / total),
-                speaking: (total - speaking) * (100 / total),
+                english: Math.round((total - english) * (100 / total)),
+                russian: Math.round((total - russian) * (100 / total)),
+                auding: Math.round((total - auding) * (100 / total)),
+                speaking: Math.round((total - speaking) * (100 / total)),
                 count_words: total
             }  
             return res.status(200).json(result); 

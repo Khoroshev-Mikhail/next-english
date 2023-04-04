@@ -92,7 +92,7 @@ model Text{
   id            Int @id @default(autoincrement())
   eng           String @unique
   rus           String @unique
-  text          String
+  text          Json
   group         Group @relation(fields: [group_id], references: [id])
   group_id      Int @unique
   visible       Boolean @default(true)

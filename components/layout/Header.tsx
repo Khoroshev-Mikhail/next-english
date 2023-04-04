@@ -44,8 +44,8 @@ export default function Header(){
                 </div>
                 <Navbar.Toggle />
             </div>
-            <Navbar.Collapse >
-                <Navbar.Link as={Link} href="/groups" active={pathname === "/groups"} className="text-lg">
+            <Navbar.Collapse className="z-10 bg-white">
+                <Navbar.Link as={Link} href="/groups" active={pathname === "/groups"} className="text-lg z-10">
                     Слова
                 </Navbar.Link>
                 <Navbar.Link disabled as={Link} href="/texts" active={pathname === "/texts"} className="text-lg">

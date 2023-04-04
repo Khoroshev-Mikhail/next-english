@@ -4,7 +4,7 @@ import { updateFetch } from 'lib/fetchesCRUD'
 import useSWRMutation from 'swr/mutation'
 import { useEffect, useState } from 'react'
 import { BG_SUCCESS, DELAY, ENGLISH } from 'lib/errors'
-import { speechText } from 'lib/fns'
+import { speechText, ucFirst } from 'lib/fns'
 import Image from 'next/image'
 import { Button, Spinner } from 'flowbite-react'
 
@@ -39,6 +39,9 @@ export default function English(){
                 const index = data.findIndex(el => !goodAnswers.includes(el.id) && !badAnswers.includes(el.id))
                 if(index >= 0){
                     setI(index)
+                }
+                if(index < 0){
+                    mutate()
                 }
             } 
         }, DELAY)
@@ -76,7 +79,7 @@ export default function English(){
             <>  
                 <div className='cursor-pointer flex justify-center' onClick={()=>speechText(data[i]?.eng)}>
                     <h3 className="text-center text-2xl font-extrabold p-2">
-                        { data && data[i]?.eng } <Image src={'/images/speaker-wave.svg'} alt='(sound)' width={20} height={20} className="inline"/>
+                        { data && ucFirst(data[i]?.eng) } <Image src={'/images/speaker-wave.svg'} alt='(sound)' width={20} height={20} className="inline"/>
                     </h3>
                 </div>
                 {data[i].answers.map((rus, index) => {
@@ -87,7 +90,7 @@ export default function English(){
                             onClick={ ()=> attempt(data[i].id, rus) }
                             className={`${badAnswers.includes(data[i].id) && data[i].rus.toLowerCase() != rus.toLowerCase() && 'bg-red-500'} ${goodAnswers.includes(data[i].id) && data[i].rus.toLowerCase() == rus.toLowerCase() && 'bg-green-500'} block  h-12 my-2 border-solid duration-500 border text-lg font-medium rounded-md outline-none`}
                         >
-                            {rus}
+                            { ucFirst(rus) }
                         </button>
                     )
                 })}

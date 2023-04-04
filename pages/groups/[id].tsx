@@ -13,8 +13,8 @@ export default function Group_Page(){
             <div className='col-span-12'>
                 <h1 className='text-4xl text-center pb-4 min-h-[56px]'>{data?.eng || <Spinner />}</h1> 
             </div>
-            <Method_card method='english' header='Перевод с Англ' />
-            <Method_card method='russian' header='Перевод с Рус.' />
+            <Method_card method='english' header='Перевод с Английского' />
+            <Method_card method='russian' header='Перевод с Русского' />
             <Method_card method='auding' header='Аудирование' />
             <Method_card method='speaking' header='Произношение' />
         </div>

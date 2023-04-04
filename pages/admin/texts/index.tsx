@@ -1,5 +1,6 @@
 import { Group } from '@prisma/client'
 import CreateGroup from 'components/admin/Create_group'
+import CreateText from 'components/admin/Create_text'
 import Group_row from 'components/admin/Group_row'
 import { sortWordByEng, sortWordById, sortWordByRus } from 'lib/compartators'
 import { useState } from 'react'
@@ -26,7 +27,7 @@ export default function Admin_groups(){
     }
     return(
         <>
-            <CreateGroup />
+            <CreateText />
             <div className='grid grid-cols-12 border-2 p-4 rounded-lg'>
                 <div className="col-span-12 grid grid-cols-12">
                     <div className='col-span-1 cursor-pointer' onClick={()=>toggleComparator(sortWordById)}>Id</div>

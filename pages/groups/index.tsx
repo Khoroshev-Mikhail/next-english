@@ -5,7 +5,7 @@ import useSWR from 'swr'
 export default function Groups(){
     const { data, error, isLoading } = useSWR<(Group & { _count: { words: number }})[]>(`/api/groups`)
     return(
-        <div className="grid grid-cols-12 gap-4 px-2">
+        <div className="grid grid-cols-12 gap-2 sm:gap-4 px-2">
             {/* ошибка если пользователь не авторизован проверь */}
             {!error && data && data?.map((el, i) =>{
                 return <Group_card {...el} key={i}/>

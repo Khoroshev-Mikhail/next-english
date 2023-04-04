@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { BG_SUCCESS, DELAY, RUSSIAN } from 'lib/errors'
 import { Button, Spinner } from 'flowbite-react'
 import Image from 'next/image'
+import { ucFirst } from 'lib/fns'
 
 
 type Data = { id: number, eng: string, rus: string, answers: string[] }
@@ -71,7 +72,7 @@ export default function Russian(){
             <>
                 <div className='flex justify-center'>
                     <h3 className="text-center text-2xl font-extrabold p-2">
-                        { data && data[i]?.rus }
+                        { data && ucFirst(data[i]?.rus) }
                     </h3>
                 </div>
                 {data[i]?.answers.map((eng, index) => {
@@ -82,7 +83,7 @@ export default function Russian(){
                             onClick={ ()=> attempt(data[i].id, eng) }
                             className={`${badAnswers.includes(data[i].id) && data[i].eng.toLowerCase() != eng.toLowerCase() && 'bg-red-500'} ${goodAnswers.includes(data[i].id) && data[i].eng.toLowerCase() == eng.toLowerCase() && 'bg-green-500'} block  h-12 my-2 border-solid duration-500 border text-lg font-medium rounded-md outline-none`}
                         >
-                            {eng}
+                            { ucFirst(eng) }
                         </button>
                     )
                 })}

@@ -8,7 +8,7 @@ import { AUDING, BG_SUCCESS, DELAY, SPEAKING } from 'lib/errors'
 import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-polyfill';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import Image from 'next/image'
-import { speechText } from 'lib/fns'
+import { speechText, ucFirst } from 'lib/fns'
 
 const APP_ID = "5f4e33d5-c05f-4e56-928e-36257a6661b0"
 const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(APP_ID);
@@ -96,7 +96,7 @@ export default function Speaking(){
                 </div>
                 <div className='flex justify-center cursor-pointer' onClick={()=>speechText(data[i].eng)}>
                     <h3 className="text-center text-2xl font-extrabold p-2">
-                        { data[i]?.rus } <Image src={'/images/speaker-wave.svg'} alt='(sound)' width={20} height={20} className="inline"/>
+                        { ucFirst(data[i]?.rus) } <Image src={'/images/speaker-wave.svg'} alt='(sound)' width={20} height={20} className="inline"/>
                     </h3>
                 </div>
                 <div className='flex justify-between'>

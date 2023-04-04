@@ -5,7 +5,7 @@ import useSWRMutation from 'swr/mutation'
 import { useEffect, useRef, useState } from 'react'
 import { Button, Spinner, TextInput } from 'flowbite-react'
 import { AUDING, BG_SUCCESS, DELAY } from 'lib/errors'
-import { speechText } from 'lib/fns'
+import { speechText, ucFirst } from 'lib/fns'
 import Image from 'next/image'
 
 export default function Auding(){
@@ -75,7 +75,7 @@ export default function Auding(){
             <>
                 <div className='flex justify-center' onClick={()=>speechText(data[i]?.eng)}>
                     <h3 className="text-center text-2xl font-extrabold p-2">
-                        { data && data[i].rus } <Image src={'/images/speaker-wave.svg'} alt='(sound)' width={20} height={20} className="inline"/>
+                        { data && ucFirst(data[i]?.rus) } <Image src={'/images/speaker-wave.svg'} alt='(sound)' width={20} height={20} className="inline"/>
                     </h3>
                 </div>
                 <div className='flex justify-center pb-2'>

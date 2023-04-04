@@ -1,12 +1,9 @@
-import { UNAUTHPRIZED } from 'lib/errors';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth';
 import prisma from '../../../lib/prisma';
-import { authOptions } from '../auth/[...nextauth]';
 
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
     try{
-        const data = await prisma.group.findMany({
+        const data = await prisma.text.findMany({
             where: {
                 visible: true
             },
@@ -14,7 +11,8 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                 id: true,
                 eng: true,
                 rus: true,
-                _count: true,
+                text: true,
+                group_id: true,
             },
         })
         return res.status(200).json(data);
