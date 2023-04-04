@@ -77,9 +77,9 @@ export default function Speaking(){
 
 
     return (
-        <div className={`${data && goodAnswers.includes(data[i]?.id) && BG_SUCCESS} w-full min-h-[354px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
+        <div className={`${data && goodAnswers.includes(data[i]?.id) && BG_SUCCESS} w-full min-h-[100px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
             {isLoading &&
-                <div className='w-full h-full min-h-[354px] flex flex-col justify-center text-center'>
+                <div className='w-full h-full min-h-[126px] flex flex-col justify-center text-center'>
                     <Spinner />
                 </div>
             }

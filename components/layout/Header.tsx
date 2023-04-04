@@ -28,7 +28,7 @@ export default function Header(){
                                 </span>
                             </Dropdown.Header>
                             <Dropdown.Item>
-                                <Link href='/user'>Словарь</Link>
+                                <Link href='/user' className="w-full">Словарь</Link>
                             </Dropdown.Item>
                             <Dropdown.Item>
                                 Настройки

@@ -29,30 +29,39 @@ export default function Auding(){
             setTimeout(() => { 
                 if(i < data.length - 1){
                     setI(state => state + 1)
-                }
-                setAnswer('')
+                } 
+                else if(new Set(goodAnswers).size < data.length){
+                    const index = data.findIndex(el => !goodAnswers.includes(el.id))
+                    if(index >= 0){
+                        setI(index)
+                    }
+                } 
+                
             }, DELAY)
         }
-    }, [answer, data, i])
+    }, [ answer, data, i ])
+    useEffect(()=>{
+        setAnswer('')
+    }, [ i ])
     useEffect(()=>{
         setI(0)
-    }, [data])
+    }, [ data ])
     useEffect(()=>{
         if(data && data[i]){
             input?.current?.focus()
             speechText(data[i].eng)
         }
-    }, [i, data])
+    }, [ i, data ])
     useEffect(()=>{
         return () => {
             cache.delete(`/api/groups/${id}/auding`)
         }
-    },[])
+    },[ ])
 
     return(
         <div className={`${data && goodAnswers.includes(data[i]?.id) && BG_SUCCESS} w-full min-h-[100px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
             {isLoading &&
-                <div className='w-full h-full min-h-[90px] flex flex-col justify-center text-center'>
+                <div className='w-full h-full min-h-[148px] flex flex-col justify-center text-center'>
                     <Spinner />
                 </div>
             }

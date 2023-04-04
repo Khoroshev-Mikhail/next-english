@@ -4,8 +4,14 @@ import { SWRConfig } from "swr/_internal";
 import { SessionProvider, useSession } from "next-auth/react"
 import Layout from 'components/layout/Layout';
 import { Spinner } from 'flowbite-react';
+import { useEffect } from 'react';
+import useSWR from 'swr'
+import { Vocabulary_Word } from 'lib/errors';
 
 const App = ({ Component, pageProps: { session, ...pageProps } }) => {
+  const { data, error, isLoading } = useSWR<{ name: string, email: string }>(session?.user?.id ? `/api/user/${session.user.id}` : null)
+  const { data: vocabulary} = useSWR<Vocabulary_Word[]>(`/api/user/vocabulary`)
+  
   return (
     <SessionProvider session={session}>
         <SWRConfig value={{

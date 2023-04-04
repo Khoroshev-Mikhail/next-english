@@ -1,16 +1,5 @@
 {
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js",
-  "/": "pages/index.js",
-  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/groups/[id]": "pages/groups/[id].js",
-  "/groups": "pages/groups.js",
-  "/api/groups/[id]": "pages/api/groups/[id].js",
-  "/groups/[id]/russian": "pages/groups/[id]/russian.js",
-  "/api/groups/[id]/progress": "pages/api/groups/[id]/progress.js",
-  "/api/groups": "pages/api/groups.js",
-  "/api/words": "pages/api/words.js",
-  "/api/user/vocabulary/russian": "pages/api/user/vocabulary/russian.js",
-  "/api/groups/[id]/russian": "pages/api/groups/[id]/russian.js"
+  "/_document": "pages/_document.js"
 }
