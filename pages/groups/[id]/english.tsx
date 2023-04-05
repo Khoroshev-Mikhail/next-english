@@ -14,6 +14,7 @@ export default function English(){
     const router = useRouter()
     const { id } = router.query
     const { cache } = useSWRConfig()
+    const success_ring = new Audio('/audio/success.mp3')
     
     const { data, error, isLoading, isValidating, mutate } = useSWR<Data[]>(id ? `/api/groups/${id}/english` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/english/`, updateFetch)
@@ -23,7 +24,6 @@ export default function English(){
     
     function attempt(word_id: number, rus: string){
         if(data[i].rus.toLowerCase() === rus.toLowerCase()){
-            const success_ring = new Audio('/audio/success.mp3')
             success_ring.play()
             trigger({ method: ENGLISH, word_id })
             setGoodAnswers(state => state.concat(word_id))

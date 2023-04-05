@@ -8,13 +8,14 @@ import { Button, Spinner } from 'flowbite-react'
 import Image from 'next/image'
 import { ucFirst } from 'lib/fns'
 
-
 type Data = { id: number, eng: string, rus: string, answers: string[] }
 
 export default function Russian(){
     const router = useRouter()
     const { id } = router.query
     const { cache } = useSWRConfig()
+    const success_ring = new Audio('/audio/success.mp3')
+
     const { data, error, isLoading, isValidating } = useSWR<Data[]>(id ? `/api/groups/${id}/russian` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/russian/`, updateFetch)
     const [ i, setI ] = useState<number>(0)
@@ -23,7 +24,6 @@ export default function Russian(){
     
     function attempt(word_id: number, eng: string){
         if(data[i].eng.toLowerCase() === eng.toLowerCase()){
-            const success_ring = new Audio('/audio/success.mp3')
             success_ring.play()
             trigger({ method: RUSSIAN, word_id })
             setGoodAnswers(state => state.concat(word_id))
