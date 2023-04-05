@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import prisma from '../../../../lib/prisma';
 import { authOptions } from '../../auth/[...nextauth]';
+import { ucFirst } from 'lib/fns';
 
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
     try{
@@ -29,10 +30,10 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             }
             const data = await prisma.word.create({
                 data: {
-                    eng: eng,
-                    rus: rus,
+                    eng: ucFirst(eng),
+                    rus: ucFirst(rus),
                     groups: {
-                        connect: groups.map((el: number) => ({id: el}))
+                        connect: groups.map((el: number) => ({id: +el}))
                     }
                 }
             })

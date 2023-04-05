@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import useSWRMutation from 'swr/mutation'
 import useSWR from 'swr'
 import { Word } from '@prisma/client'
-import { updateFetch } from 'lib/fetchesCRUD'
+import { deleteFetch, updateFetch } from 'lib/fetchesCRUD'
 
 export default function Group_row(props : { id: number, eng: string, rus: string, words: {id: number}[] }){
     const [ isUpdating, setUpdating ] = useState<boolean>(false)
@@ -14,6 +14,7 @@ export default function Group_row(props : { id: number, eng: string, rus: string
 
     const { data, isLoading } = useSWR<Word[]>(props.id ? `/api/admin/groups/${props.id}/words` : null)
     const { trigger } = useSWRMutation(props.id ? `/api/admin/groups/${props.id}` : null, updateFetch)
+    const { trigger: deleteTrigger } = useSWRMutation(props.id ? `/api/admin/groups/${props.id}` : null, deleteFetch)
     const { mutate } = useSWR(`/api/admin/groups`)
 
     const { data: search, isLoading: isLoadingSearch } = useSWR(`/api/admin/words/search?str=${str}`)
@@ -31,6 +32,10 @@ export default function Group_row(props : { id: number, eng: string, rus: string
         } else{
             setWord_ids(state => state.concat([+i]))
         }
+    }
+    async function del(){
+        await deleteTrigger({})
+        mutate()
     }
 
     useEffect(()=>{
@@ -52,6 +57,12 @@ export default function Group_row(props : { id: number, eng: string, rus: string
                         className='w-32 h-10 bg-transparent hover:bg-sky-100 border-solid  duration-500 hover:duration-500 border-2 text-lg font-medium rounded-md outline-none ml-10'
                     >
                         Обновить
+                    </button>
+                    <button 
+                        onClick={()=>del()}
+                        className='w-32 h-10 bg-transparent hover:bg-sky-100 border-solid  duration-500 hover:duration-500 border-2 text-lg font-medium rounded-md outline-none ml-10'
+                    >
+                        Удалить
                     </button>
                 </div>
             </div>

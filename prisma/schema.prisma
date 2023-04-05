@@ -69,7 +69,7 @@ enum Word_Type {
 }
 model Word{
   id            Int @id @default(autoincrement())
-  eng           String @unique
+  eng           String
   rus           String 
   type          Word_Type?
   english       User[] @relation("english")

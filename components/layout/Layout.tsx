@@ -8,7 +8,7 @@ export default function Layout({children}){
         <>
             <Header />
             <div className="container mx-auto min-h-screen  text-black text-lg ">
-                {/* {session?.user.role === 'ADMIN' && <Header_admin />} */}
+                {session?.user.role === 'ADMIN' && <Header_admin />}
                 <div className="pt-4">
                     {children}
                 </div>

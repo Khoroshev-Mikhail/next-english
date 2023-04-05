@@ -40,10 +40,19 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     eng: eng ? String(eng) : undefined,
                     rus: rus ? String(rus) : undefined,
                     groups: {
-                        connect: groups.length !== 0 ? groups.map(el => ({ id: +el })) : undefined,
-                        set: groups.length === 0 ? [] : undefined
+                        set: [],
+                        connect:  groups.map(el => ({ id: +el })),
                     }
-                } 
+                },
+                select: {
+                    eng: true,
+                    rus: true,
+                    groups: {
+                        select: {
+                            id: true
+                        }
+                    }
+                }
             })
             return res.status(200).json(data);
         }

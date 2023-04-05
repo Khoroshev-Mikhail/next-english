@@ -1,11 +1,9 @@
-import Button from 'components/UI/buttons'
 import { Checkbox, Label, Spinner, TextInput } from 'flowbite-react'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import useSWRMutation from 'swr/mutation'
 import useSWR from 'swr'
 import { Group, Word } from '@prisma/client'
-import { updateFetch } from 'lib/fetchesCRUD'
+import { deleteFetch, updateFetch } from 'lib/fetchesCRUD'
 
 export default function Word_row(props : { id: number, eng: string, rus: string, groups: {id: number}[] }){
     const [ isUpdating, setUpdating ] = useState<boolean>(false)
@@ -15,6 +13,7 @@ export default function Word_row(props : { id: number, eng: string, rus: string,
 
     const { data,  isLoading: isLoadingGroups } = useSWR<Group[]>(`/api/admin/groups`)
     const { trigger } = useSWRMutation(`/api/admin/words/${props.id}`, updateFetch)
+    const { trigger: deleteTrigger } = useSWRMutation(props.id ? `/api/admin/words/${props.id}` : null, deleteFetch)
     const { mutate } = useSWR(`/api/admin/words`)
 
     async function handler(){
@@ -30,6 +29,10 @@ export default function Word_row(props : { id: number, eng: string, rus: string,
         } else{
             setGroup_ids(state => state.concat([+i]))
         }
+    }
+    async function del(){
+        await deleteTrigger({})
+        mutate()
     }
 
     useEffect(()=>{
@@ -51,6 +54,12 @@ export default function Word_row(props : { id: number, eng: string, rus: string,
                         className='w-32 h-10 bg-transparent hover:bg-sky-100 border-solid  duration-500 hover:duration-500 border-2 text-lg font-medium rounded-md outline-none ml-10'
                     >
                         Обновить
+                    </button>
+                    <button 
+                        onClick={()=>del()}
+                        className='w-32 h-10 bg-transparent hover:bg-sky-100 border-solid  duration-500 hover:duration-500 border-2 text-lg font-medium rounded-md outline-none ml-10'
+                    >
+                        Удалить
                     </button>
                 </div>
             </div>

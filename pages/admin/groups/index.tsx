@@ -6,7 +6,7 @@ import { useState } from 'react'
 import useSWR from 'swr'
 
 export default function Admin_groups(){
-    const {data, error, isLoading} = useSWR(`/api/admin/texts`)
+    const {data, error, isLoading} = useSWR(`/api/admin/groups`)
     const [comparator, setComparator] = useState<{fn: any, increase: boolean}>({fn: sortWordById, increase: true})
     const [filter, setFilter] = useState<string>('')
 

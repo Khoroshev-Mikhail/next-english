@@ -1,9 +1,10 @@
 import { Button, Checkbox, Label, Spinner, TextInput } from 'flowbite-react'
-import { createFetch } from 'lib/fetchesCRUD'
+import { createFetch, deleteFetch } from 'lib/fetchesCRUD'
 import { useState } from 'react'
 import useSWRMutation from 'swr/mutation'
 import useSWR from 'swr'
 import { Group } from '@prisma/client'
+import { ucFirst } from 'lib/fns'
 
 export default function CreateWord(){
     const [eng, setEng] = useState<string>('')
@@ -12,18 +13,22 @@ export default function CreateWord(){
 
     const {data, error, isLoading} = useSWR<Group[]>(`/api/admin/groups`)
     const { trigger } = useSWRMutation(`/api/admin/words`, createFetch)
+    const { trigger: deleteTrigger } = useSWRMutation(`/api/admin/words`, deleteFetch)
 
-    function handler(){
-        trigger({eng, rus, groups})
+    async function handler(){
+        await trigger({eng, rus, groups})
         setEng('')
         setRus('')
-        setGroup_ids([])
+        // setGroup_ids([])
     }
-    function handlerGroup_ids(i){
+    function del(){
+        deleteTrigger({})
+    }
+    function handlerGroup_ids(i: number){
         if(groups.includes(i)){
             setGroup_ids(state => state.filter(el => el !== i))
         } else{
-            setGroup_ids(state => state.concat([+i]))
+            setGroup_ids(state => state.concat([Number(i)]))
         }
     }
     return(
@@ -39,6 +44,7 @@ export default function CreateWord(){
                     <TextInput id='rus' value={rus} onChange={( { target: {value} }) => setRus(value)} placeholder="Русский"/>
                 </div>
                 <div className='col-span-2'>
+                    {/* Добавь на enter */}
                     <Button onClick={handler}>
                         Создать
                     </Button>
@@ -50,7 +56,7 @@ export default function CreateWord(){
                 {!isLoading && data && data.map((el, i) => {
                     return (
                         <div className='col-span-3 pl-4' key={i}>
-                            <Checkbox id={String(el.id)} value={el.id} onChange={({ target: {value} }) => handlerGroup_ids(value)}/>
+                            <Checkbox id={String(el.id)} value={el.id} checked={groups.includes(el.id)} onChange={({ target: {value} }) => handlerGroup_ids(Number(value))}/>
                             <Label htmlFor={String(el.id)}> {el.eng} / {el.rus}</Label>
                         </div>
                     )
