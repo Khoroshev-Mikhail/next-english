@@ -28,6 +28,9 @@ export default function Auding(){
             setGoodAnswers(state => state.concat(data[i].id))
             trigger({ method: AUDING, word_id: data[i].id })
             setTimeout(() => { 
+                if(i === 0){
+                    speechText(data[i].rus) //костыль для телефонов
+                }
                 if(i < data.length - 1){
                     setI(state => state + 1)
                 } 
