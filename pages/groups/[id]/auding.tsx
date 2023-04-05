@@ -7,6 +7,7 @@ import { Button, Spinner, TextInput } from 'flowbite-react'
 import { AUDING, BG_SUCCESS, DELAY } from 'lib/errors'
 import { speechText, ucFirst } from 'lib/fns'
 import Image from 'next/image'
+import Head from 'next/head'
 
 export default function Auding(){
     const router = useRouter()
@@ -59,7 +60,11 @@ export default function Auding(){
     },[ ])
 
     return(
-        <div className={`${data && goodAnswers.includes(data[i]?.id) && BG_SUCCESS} w-full min-h-[100px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
+        <div className={`${data && goodAnswers.includes(data[i]?.id) && BG_SUCCESS} w-[96%] mx-auto min-h-[100px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
+            <Head>
+                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+                <title>Аудирование</title>
+            </Head>
             {isLoading &&
                 <div className='w-full h-full min-h-[148px] flex flex-col justify-center text-center'>
                     <Spinner />

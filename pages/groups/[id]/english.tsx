@@ -7,6 +7,7 @@ import { BG_SUCCESS, DELAY, ENGLISH } from 'lib/errors'
 import { speechText, ucFirst } from 'lib/fns'
 import Image from 'next/image'
 import { Button, Spinner } from 'flowbite-react'
+import Head from 'next/head'
 
 type Data = { id: number, eng: string, rus: string, answers: string[] }
 
@@ -69,6 +70,10 @@ export default function English(){
 
     return(
         <div className={`${data && goodAnswers.includes(data[i]?.id) && BG_SUCCESS} w-[96%] mx-auto min-h-[354px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
+            <Head>
+                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+                <title>Перевод с Английского</title>
+            </Head>
             {isLoading &&
                 <div className='w-full h-full min-h-[354px] flex flex-col justify-center text-center'>
                     <Spinner />

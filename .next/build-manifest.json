@@ -25,10 +25,25 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/groups/[id]/auding": [
+    "/groups": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/groups/[id]/auding.js"
+      "static/chunks/pages/groups.js"
+    ],
+    "/groups/[id]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/groups/[id].js"
+    ],
+    "/groups/[id]/english": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/groups/[id]/english.js"
+    ],
+    "/groups/[id]/russian": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/groups/[id]/russian.js"
     ]
   },
   "ampFirstPages": []
