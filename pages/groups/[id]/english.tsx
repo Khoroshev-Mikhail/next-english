@@ -15,7 +15,7 @@ export default function English(){
     const { id } = router.query
     const { cache } = useSWRConfig()
     const success_ring = new Audio('/audio/success.mp3')
-    
+
     const { data, error, isLoading, isValidating, mutate } = useSWR<Data[]>(id ? `/api/groups/${id}/english` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/english/`, updateFetch)
     const [ i, setI ] = useState<number>(0)
@@ -23,6 +23,7 @@ export default function English(){
     const [ badAnswers, setBadAnswers ] = useState<number[]>([])
     
     function attempt(word_id: number, rus: string){
+
         if(data[i].rus.toLowerCase() === rus.toLowerCase()){
             success_ring.play()
             trigger({ method: ENGLISH, word_id })
@@ -32,6 +33,9 @@ export default function English(){
             setBadAnswers(state => state.concat(word_id))
         }
         setTimeout(() => {
+            if(i === 0){
+                speechText(data[i].rus) //костыль для телефонов
+            }
             if(i < data.length - 1){
                 setI(state => state + 1)
             } 
@@ -64,7 +68,7 @@ export default function English(){
     },[ ])
 
     return(
-        <div className={`${data && goodAnswers.includes(data[i]?.id) && BG_SUCCESS} w-full min-h-[354px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
+        <div className={`${data && goodAnswers.includes(data[i]?.id) && BG_SUCCESS} w-[96%] mx-auto min-h-[354px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
             {isLoading &&
                 <div className='w-full h-full min-h-[354px] flex flex-col justify-center text-center'>
                     <Spinner />
