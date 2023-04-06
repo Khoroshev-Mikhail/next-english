@@ -92,13 +92,18 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     _count: true,
                 },
             })
-            const result_promise = await Promise.all([english_promise, russian_promise, speaking_promise, auding_promise, total_promise])
             
             const { _count: { words: english } } = english_promise
             const { _count: { words: russian } } = russian_promise
             const { _count: { words: speaking } } = speaking_promise
             const { _count: { words: auding } } = auding_promise
             const { _count: { words: total } } = total_promise
+            // const result_promise = await Promise.all([english_promise, russian_promise, speaking_promise, auding_promise, total_promise])
+            // const { _count: { words: english } } = result_promise[0]
+            // const { _count: { words: russian } } = result_promise[1]
+            // const { _count: { words: speaking } } = result_promise[2]
+            // const { _count: { words: auding } } = result_promise[3]
+            // const { _count: { words: total } } = result_promise[4]
 
             const result = {
                 english: Math.round((total - english) * (100 / total)),
