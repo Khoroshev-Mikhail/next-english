@@ -81,14 +81,14 @@ export default function Speaking(){
 
 
     return (
-        <div className={`${data && goodAnswers.includes(data[i]?.id) && BG_SUCCESS} w-[96%] mx-auto min-h-[100px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
+        <div className={`${data && goodAnswers.includes(data[i]?.id) && BG_SUCCESS} w-[96%] mx-auto min-h-[194px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
             <Head>
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
                 <title>Произношение</title>
             </Head>
             
             {isLoading &&
-                <div className='w-full h-full min-h-[126px] flex flex-col justify-center text-center'>
+                <div className='w-full h-full min-h-[154px] flex flex-col justify-center text-center'>
                     <Spinner />
                 </div>
             }
