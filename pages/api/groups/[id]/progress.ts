@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                             words: {
                                 where: {
                                     english: {
-                                        none: { id: String(session.user.id) }
+                                        some: { id: String(session.user.id) }
                                     }
                                 }
                             },
@@ -40,7 +40,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                             words: {
                                 where: {
                                     russian: {
-                                        none: { id: String(session.user.id) }
+                                        some: { id: String(session.user.id) }
                                     }
                                 }
                             },
@@ -58,7 +58,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                             words: {
                                 where: {
                                     speaking: {
-                                        none: { id: String(session.user.id) }
+                                        some: { id: String(session.user.id) }
                                     }
                                 }
                             },
@@ -76,7 +76,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                             words: {
                                 where: {
                                     auding: {
-                                        none: { id: String(session.user.id) }
+                                        some: { id: String(session.user.id) }
                                     }
                                 }
                             },
@@ -106,10 +106,10 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             // const { _count: { words: total } } = result_promise[4]
 
             const result = {
-                english: Math.round((total - english) * (100 / total)),
-                russian: Math.round((total - russian) * (100 / total)),
-                auding: Math.round((total - auding) * (100 / total)),
-                speaking: Math.round((total - speaking) * (100 / total)),
+                english: Math.round(english  / total * 100),
+                russian: Math.round(russian / total * 100),
+                auding: Math.round(auding / total * 100),
+                speaking: Math.round(speaking / total * 100),
                 count_words: total
             }  
             return res.status(200).json(result); 
