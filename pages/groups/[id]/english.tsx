@@ -15,9 +15,9 @@ export default function English(){
     const router = useRouter()
     const { id } = router.query
     const { cache } = useSWRConfig()
-    // const success_ring = new Audio('/audio/success.mp3')
+    const success_ring = new Audio('/audio/success.mp3')
     // success_ring.volume = 50
-
+    const [ audio ] = useState(new Audio('/audio/success.mp3'))
     const { data, error, isLoading, isValidating, mutate } = useSWR<Data[]>(id ? `/api/groups/${id}/english` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/english/`, updateFetch)
     const [ i, setI ] = useState<number>(0)
@@ -26,7 +26,7 @@ export default function English(){
     
     function attempt(word_id: number, rus: string){
         if(data[i].rus.toLowerCase() === rus.toLowerCase()){
-            // success_ring.play()
+            audio.play()
             trigger({ method: ENGLISH, word_id })
             setGoodAnswers(state => state.concat(word_id))
         }
@@ -40,16 +40,16 @@ export default function English(){
             if(i < data.length - 1){
                 setI(state => state + 1)
             } 
-            // else if(new Set(goodAnswers).size + new Set(badAnswers).size < data.length){
-            //     const index = data.findIndex(el => !goodAnswers.includes(el.id) && !badAnswers.includes(el.id))
-            //     if(index >= 0){
-            //         setI(index)
-            //     }
-            //     if(index < 0){
-            //         mutate()
-            //     }
-            // } 
-        }, 600)
+            else if(new Set(goodAnswers).size + new Set(badAnswers).size < data.length){
+                const index = data.findIndex(el => !goodAnswers.includes(el.id) && !badAnswers.includes(el.id))
+                if(index >= 0){
+                    setI(index)
+                }
+                if(index < 0){
+                    mutate()
+                }
+            } 
+        }, DELAY)
     }
     
     useEffect(()=>{
