@@ -11,9 +11,9 @@ import Image from 'next/image'
 import { speechText, ucFirst } from 'lib/fns'
 import Head from 'next/head'
 
-// const APP_ID = "5f4e33d5-c05f-4e56-928e-36257a6661b0"
-// const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(APP_ID);
-// SpeechRecognition.applyPolyfill(SpeechlySpeechRecognition);
+const APP_ID = "5f4e33d5-c05f-4e56-928e-36257a6661b0"
+const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(APP_ID);
+SpeechRecognition.applyPolyfill(SpeechlySpeechRecognition);
 
 export default function Speaking(){
     const router = useRouter()
@@ -27,15 +27,15 @@ export default function Speaking(){
     const [ goodAnswers, setGoodAnswers ] = useState<number[]>([])
     const [ isMicrophoneOn, setIsMicrophoneOn ] = useState<boolean>(true)
     
-    // const { transcript, listening, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
-    // const startListening = () => SpeechRecognition.startListening({ language: 'en-US' , continuous: true });
+    const { transcript, listening, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
+    const startListening = () => SpeechRecognition.startListening({ language: 'en-US' , continuous: true });
       
     useEffect(()=>{
         if(data && data[i]){
             const eng = data[i].eng.toLocaleUpperCase()
-            // const attemptVoice = transcript.split(' ').at(-1).toLocaleUpperCase()
+            const attemptVoice = transcript.split(' ').at(-1).toLocaleUpperCase()
             const attemptKeyboard = answer.toLocaleUpperCase()
-            if(eng === attemptKeyboard){
+            if(eng === attemptVoice || eng === attemptKeyboard){
                 // audio.pause()
                 // audio.currentTime = 0
                 // audio.play()
@@ -48,31 +48,31 @@ export default function Speaking(){
                 }, DELAY)
             }
         }
-    }, [answer, data, i])
+    }, [answer, data, i, transcript])
     useEffect(()=>{
         setI(0)
-        // resetTranscript()
+        resetTranscript()
     }, [ data ])
     useEffect(()=>{
-        // resetTranscript()
+        resetTranscript()
     }, [ i ])
-    // useEffect(()=>{
-    //     startListening()
-    //     return () => {
-    //         SpeechRecognition.stopListening()
-    //         resetTranscript()
-    //     }
-    // }, [])
-    // useEffect(()=>{
-    //     if(isMicrophoneOn){
-    //         resetTranscript()
-    //         startListening()
-    //     }
-    //     if(!isMicrophoneOn){
-    //         SpeechRecognition.stopListening()
-    //         resetTranscript()
-    //     }
-    // }, [isMicrophoneOn])
+    useEffect(()=>{
+        // startListening()
+        return () => {
+            SpeechRecognition.stopListening()
+            resetTranscript()
+        }
+    }, [])
+    useEffect(()=>{
+        if(isMicrophoneOn){
+            resetTranscript()
+            startListening()
+        }
+        if(!isMicrophoneOn){
+            SpeechRecognition.stopListening()
+            resetTranscript()
+        }
+    }, [isMicrophoneOn])
     // useEffect(()=>{
     //     setTimeout(()=>{
     //         resetTranscript()
