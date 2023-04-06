@@ -118,7 +118,7 @@ export default function Speaking(){
                 </div>
                 <div className='flex justify-center'>
                     <h3 className="text-center text-2xl font-extrabold p-2 truncate text-left">
-                        {transcript.split(' ').at(-1)}
+                        {transcript && transcript.split(' ').at(-1)}
                         {/* сделать div с обрезанием текста */}
                     </h3>
                 </div>
