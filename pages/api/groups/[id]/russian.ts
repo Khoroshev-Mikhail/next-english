@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             throw new Error(UNAUTHPRIZED)
         }
 
-        const words_promise = prisma.group.findUnique({
+        const { words } = await prisma.group.findUnique({
             where: {
                 id: Number(id)
             },
@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                 },
             }
         })
-        const badAnswers_promise = prisma.group.findUnique({
+        const { words: badAnswers } = await prisma.group.findUnique({
             where: {
                 id: Number(id),
             },
@@ -43,7 +43,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                 }
             }
         })
-        const [ { words }, { words: badAnswers } ] = await Promise.all([words_promise, badAnswers_promise])
+        // const [ { words }, { words: badAnswers } ] = await Promise.all([words_promise, badAnswers_promise])
         const result = []
         const tmp = badAnswers.map(el => el.eng)
         const set = new Set()
