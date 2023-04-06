@@ -51,10 +51,10 @@ export default function Speaking(){
     }, [answer, data, i, transcript])
     useEffect(()=>{
         setI(0)
-        resetTranscript()
+        // resetTranscript()
     }, [ data ])
     useEffect(()=>{
-        resetTranscript()
+        // resetTranscript()
     }, [ i ])
     useEffect(()=>{
         // startListening()
@@ -65,12 +65,12 @@ export default function Speaking(){
     }, [])
     useEffect(()=>{
         if(isMicrophoneOn){
-            resetTranscript()
-            startListening()
+            // resetTranscript()
+            // startListening()
         }
         if(!isMicrophoneOn){
-            SpeechRecognition.stopListening()
-            resetTranscript()
+            // SpeechRecognition.stopListening()
+            // resetTranscript()
         }
     }, [isMicrophoneOn])
     // useEffect(()=>{
