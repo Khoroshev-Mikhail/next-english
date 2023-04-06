@@ -14,7 +14,7 @@ export default function Auding(){
     const { id } = router.query
     const { cache } = useSWRConfig()
     const input = useRef(null)
-    const success_ring = new Audio('/audio/success.mp3')
+    const [ audio ] = useState(new Audio('/audio/success.mp3'))
 
     const { data, error, isLoading, isValidating } = useSWR<{ id: number, eng: string, rus: string }[]>(id ? `/api/groups/${id}/auding` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/auding/`, updateFetch)
@@ -24,7 +24,9 @@ export default function Auding(){
 
     useEffect(()=>{
         if(data && data[i]?.eng.toLowerCase() === answer.toLowerCase()){
-            success_ring.play()
+            audio.pause()
+            audio.currentTime = 0
+            audio.play()
             setGoodAnswers(state => state.concat(data[i].id))
             trigger({ method: AUDING, word_id: data[i].id })
             setTimeout(() => { 

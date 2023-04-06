@@ -2,12 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
-  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/api/words": "pages/api/words.js",
-  "/api/groups": "pages/api/groups.js",
-  "/user": "pages/user.js",
-  "/groups": "pages/groups.js",
-  "/api/groups/[id]/progress": "pages/api/groups/[id]/progress.js",
-  "/api/user/vocabulary": "pages/api/user/vocabulary.js"
+  "/api/groups/[id]/english": "pages/api/groups/[id]/english.js",
+  "/groups/[id]/english": "pages/groups/[id]/english.js"
 }
