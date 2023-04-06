@@ -33,7 +33,7 @@ export default function Speaking(){
     useEffect(()=>{
         if(data && data[i]){
             const eng = data[i].eng.toLocaleUpperCase()
-            const attemptVoice = transcript.split(' ').at(-1).toLocaleUpperCase()
+            const attemptVoice = transcript.split(' ')[transcript.split(' ').length - 1].toLocaleUpperCase()
             const attemptKeyboard = answer.toLocaleUpperCase()
             if(eng === attemptVoice || eng === attemptKeyboard){
                 // audio.pause()
