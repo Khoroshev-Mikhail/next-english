@@ -39,16 +39,16 @@ export default function English(){
             if(i < data.length - 1){
                 setI(state => state + 1)
             } 
-            else if(new Set(goodAnswers).size + new Set(badAnswers).size < data.length){
-                const index = data.findIndex(el => !goodAnswers.includes(el.id) && !badAnswers.includes(el.id))
-                if(index >= 0){
-                    setI(index)
-                }
-                if(index < 0){
-                    mutate()
-                }
-            } 
-        }, DELAY)
+            // else if(new Set(goodAnswers).size + new Set(badAnswers).size < data.length){
+            //     const index = data.findIndex(el => !goodAnswers.includes(el.id) && !badAnswers.includes(el.id))
+            //     if(index >= 0){
+            //         setI(index)
+            //     }
+            //     if(index < 0){
+            //         mutate()
+            //     }
+            // } 
+        }, 600)
     }
     
     useEffect(()=>{
