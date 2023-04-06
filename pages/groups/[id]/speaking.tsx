@@ -51,18 +51,18 @@ export default function Speaking(){
     }, [answer, data, i, transcript])
     useEffect(()=>{
         setI(0)
-        resetTranscript()
+        // resetTranscript()
     }, [ data ])
     useEffect(()=>{
-        resetTranscript()
+        // resetTranscript()
     }, [ i ])
-    useEffect(()=>{
-        startListening()
-        return () => {
-            SpeechRecognition.stopListening()
-            resetTranscript()
-        }
-    }, [])
+    // useEffect(()=>{
+    //     startListening()
+    //     return () => {
+    //         SpeechRecognition.stopListening()
+    //         resetTranscript()
+    //     }
+    // }, [])
     useEffect(()=>{
         if(isMicrophoneOn){
             resetTranscript()
