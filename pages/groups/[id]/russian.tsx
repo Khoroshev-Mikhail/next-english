@@ -3,7 +3,7 @@ import useSWR, { useSWRConfig } from 'swr'
 import { updateFetch } from 'lib/fetchesCRUD'
 import useSWRMutation from 'swr/mutation'
 import { useEffect, useState } from 'react'
-import { BG_SUCCESS, DELAY, RUSSIAN } from 'lib/errors'
+import { BG_ERROR, BG_SUCCESS, DELAY, RUSSIAN } from 'lib/errors'
 import { Button, Spinner } from 'flowbite-react'
 import Image from 'next/image'
 import { ucFirst } from 'lib/fns'
@@ -88,7 +88,7 @@ export default function Russian(){
                             disabled={ badAnswers.includes(data[i].id) || goodAnswers.includes(data[i].id) }
                             key={index}
                             onClick={ ()=> attempt(data[i].id, eng) }
-                            className={`${badAnswers.includes(data[i].id) && data[i].eng.toLowerCase() != eng.toLowerCase() && 'bg-red-500'} ${goodAnswers.includes(data[i].id) && data[i].eng.toLowerCase() == eng.toLowerCase() && 'bg-green-500'} block  h-12 my-2 border-solid duration-500 border text-lg font-medium rounded-md outline-none`}
+                            className={`${badAnswers.includes(data[i].id) && data[i].eng.toLowerCase() != eng.toLowerCase() && BG_ERROR} ${(goodAnswers.includes(data[i].id) || badAnswers.includes(data[i].id)) && data[i].eng.toLowerCase() == eng.toLowerCase() && BG_SUCCESS} block  h-12 my-2 border-solid duration-500 border text-lg font-medium rounded-md outline-none`}
                         >
                             { ucFirst(eng) }
                         </button>

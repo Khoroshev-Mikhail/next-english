@@ -3,7 +3,7 @@ import useSWR, { useSWRConfig } from 'swr'
 import { updateFetch } from 'lib/fetchesCRUD'
 import useSWRMutation from 'swr/mutation'
 import { useEffect, useState } from 'react'
-import { BG_SUCCESS, DELAY, ENGLISH } from 'lib/errors'
+import { BG_ERROR, BG_SUCCESS, DELAY, ENGLISH } from 'lib/errors'
 import { speechText, ucFirst } from 'lib/fns'
 import Image from 'next/image'
 import { Button, Spinner } from 'flowbite-react'
@@ -16,7 +16,7 @@ export default function English(){
     const { id } = router.query
     const { cache } = useSWRConfig()
     // const [ audio ] = useState(new Audio('/audio/success.mp3'))
-    
+
     const { data, error, isLoading, isValidating, mutate } = useSWR<Data[]>(id ? `/api/groups/${id}/english` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/english/`, updateFetch)
     const [ i, setI ] = useState<number>(0)
@@ -98,7 +98,7 @@ export default function English(){
                             disabled={ badAnswers.includes(data[i].id) || goodAnswers.includes(data[i].id) }
                             key={index}
                             onClick={ ()=> attempt(data[i].id, rus) }
-                            className={`${badAnswers.includes(data[i].id) && data[i].rus.toLowerCase() != rus.toLowerCase() && 'bg-red-500'} ${goodAnswers.includes(data[i].id) && data[i].rus.toLowerCase() == rus.toLowerCase() && 'bg-green-500'} block  h-12 my-2 border-solid duration-500 border text-lg font-medium rounded-md outline-none`}
+                            className={`${badAnswers.includes(data[i].id) && data[i].rus.toLowerCase() != rus.toLowerCase() && BG_ERROR} ${(goodAnswers.includes(data[i].id) || badAnswers.includes(data[i].id)) && data[i].rus.toLowerCase() == rus.toLowerCase() && BG_SUCCESS} block  h-12 my-2 border-solid duration-500 border text-lg font-medium rounded-md outline-none`}
                         >
                             { ucFirst(rus) }
                         </button>

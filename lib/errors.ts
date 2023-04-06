@@ -13,7 +13,8 @@ export const AUDING = 'AUDING'
 export const SPEAKING = 'SPEAKING'
 export const METHODS: MethodLearn[] = [ENGLISH, RUSSIAN, SPELLING, AUDING, SPEAKING]
 export const DELAY = 600
-export const BG_SUCCESS = 'bg-green-300'
+export const BG_SUCCESS = 'bg-green-400'
+export const BG_ERROR = 'bg-red-400'
 
 
 //Типы
