@@ -18,7 +18,7 @@ SpeechRecognition.applyPolyfill(SpeechlySpeechRecognition);
 export default function Speaking(){
     const router = useRouter()
     const { id } = router.query
-    const [ audio ] = useState(new Audio('/audio/success.mp3'))
+    // const [ audio ] = useState(new Audio('/audio/success.mp3'))
     
     const { data, error, isLoading } = useSWR<{ id: number, eng: string, rus: string }[]>(id ? `/api/groups/${id}/speaking` : null)
     const { trigger } = useSWRMutation(`/api/user/vocabulary/speaking/`, updateFetch)
@@ -36,9 +36,9 @@ export default function Speaking(){
             const attemptVoice = transcript.split(' ').at(-1).toLocaleUpperCase()
             const attemptKeyboard = answer.toLocaleUpperCase()
             if(eng === attemptVoice || eng === attemptKeyboard){
-                audio.pause()
-                audio.currentTime = 0
-                audio.play()
+                // audio.pause()
+                // audio.currentTime = 0
+                // audio.play()
                 setGoodAnswers(state => state.concat(data[i].id))
                 trigger({ method: SPEAKING, word_id: data[i].id })
                 setTimeout(() => { 
