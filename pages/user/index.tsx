@@ -1,7 +1,7 @@
 import Vocabulary_row from 'components/client/Vocabulary_row'
 import { sortWordByEng, sortWordById, sortWordByRus } from 'lib/compartators'
 import { Vocabulary_Word, } from 'lib/errors'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useState } from 'react'
 import useSWR from 'swr'
 
@@ -29,6 +29,7 @@ export default function UserPage(){
     }
     return(
         <div className="grid grid-cols-12 gap-4 bg-white/30">
+        <div className="col-span-12 grid grid-cols-12 border-b-2 pb-4 "><button onClick={()=>signOut()}>Выход</button></div>
             <div className="col-span-12 grid grid-cols-12 border-b-2 pb-4 ">
                 <div className='col-span-4 cursor-pointer' onClick={()=>toggleComparator(sortWordByEng)}>Eng</div>
                 <div className='col-span-4 cursor-pointer' onClick={()=>toggleComparator(sortWordByRus)}>Rus</div>

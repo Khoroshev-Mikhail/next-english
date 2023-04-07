@@ -1,5 +1,10 @@
 {
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js"
+  "/_document": "pages/_document.js",
+  "/": "pages/index.js",
+  "/api/words": "pages/api/words.js",
+  "/user": "pages/user.js",
+  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
+  "/api/user/vocabulary": "pages/api/user/vocabulary.js"
 }
