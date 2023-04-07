@@ -64,8 +64,15 @@ enum Role {
 enum Word_Type {
   NOUN
   VERB
-  ADJECTIVE
-  AVERB
+  ADJECTIVE //Прилагательные
+  AVERB //Наречие
+  PRONOUN //Местоимения
+  NUMERALS //Числительные: one, first и др.
+  ARTICLE
+  PREPOSITION //Предлоги
+  CONJUNCTION //Союзы
+  IRREGULAR_VERBS
+  PHRASAL_VERBS //Фразовые глаголы
 }
 model Word{
   id            Int @id @default(autoincrement())
