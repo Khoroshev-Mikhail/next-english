@@ -19,13 +19,17 @@ export const authOptions: NextAuthOptions = {
           })
     ],
     callbacks: {
-        session({ session, token, user }) {
+        async session({ session, token, user }) {
             if(user){
                 session.user.role = user.role
                 session.user.id = user.id
             }
             return session;
         },
+        async signIn({ account }){
+            delete account.user_id
+            return true
+        }
       },
 }
 export default NextAuth(authOptions)
