@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { BG_ERROR, BG_SUCCESS, DELAY, RUSSIAN } from 'lib/errors'
 import { Button, Spinner } from 'flowbite-react'
 import Image from 'next/image'
-import { ucFirst } from 'lib/fns'
+import { speechText, ucFirst } from 'lib/fns'
 import Head from 'next/head'
 
 type Data = { id: number, eng: string, rus: string, answers: string[] }
@@ -25,6 +25,7 @@ export default function Russian(){
     
     function attempt(word_id: number, eng: string){
         if(data[i].eng.toLowerCase() === eng.toLowerCase()){
+            speechText(eng)
             // audio.pause()
             // audio.currentTime = 0
             // audio.play()
@@ -60,7 +61,7 @@ export default function Russian(){
     }, [ ])
 
     return(
-        <div className={`${data && goodAnswers.includes(data[i]?.id) && BG_SUCCESS} w-[96%] mx-auto min-h-[340px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
+        <div className={`w-[96%] mx-auto min-h-[340px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mx-auto flex flex-col rounded-lg border-2 shadow-md p-4`}>
             <Head>
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
                 <title>Перевод с Русского</title>

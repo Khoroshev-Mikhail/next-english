@@ -89,7 +89,7 @@ export default function Auding(){
                     </h3>
                 </div>
                 <div className='flex justify-center pb-2'>
-                    <TextInput autoFocus ref={input} className='text-lg w-full text-center' disabled={goodAnswers.includes(data[i].id)} value={goodAnswers.includes(data[i].id) ? data[i].eng : answer} onChange={(e)=>setAnswer(e.target.value)}/>
+                    <TextInput autoFocus ref={input} className='text-lg w-full text-center' disabled={goodAnswers.includes(data[i].id)} value={goodAnswers.includes(data[i].id) ? data[i].eng : ucFirst(answer)} onChange={(e)=>setAnswer(e.target.value)}/>
                 </div>
                 <div className='flex justify-between mt-2'>
                     <Button color='gray' onClick={()=> setI(i => i - 1) } disabled={i <= 0}>
