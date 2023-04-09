@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import prisma from '../../../../lib/prisma';
 import { authOptions } from '../../auth/[...nextauth]';
+import { Word_Type } from '@prisma/client';
 
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
     try{
@@ -28,7 +29,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             return res.status(200).json(data);
         }
         if(req.method === "PUT"){
-            const { eng, rus, groups } : { eng: string, rus: string, groups: number[] } = JSON.parse(req.body)
+            const { eng, rus, groups, type } : { eng: string, rus: string, groups: number[], type: Word_Type } = JSON.parse(req.body)
             if(!eng || !rus || !groups){
                 throw new Error(NOT_ALL_DATA_PROVIDED)
             }
@@ -39,6 +40,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                 data: {
                     eng: eng ? String(eng) : undefined,
                     rus: rus ? String(rus) : undefined,
+                    type: type,
                     groups: {
                         set: [],
                         connect:  groups.map(el => ({ id: +el })),

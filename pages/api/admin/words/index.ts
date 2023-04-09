@@ -24,14 +24,15 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             return res.status(200).json(data);
         }
         if(req.method === "POST"){
-            const { eng, rus, groups } = JSON.parse(req.body)
-            if(!eng || !rus || !groups){
+            const { eng, rus, groups, type } = JSON.parse(req.body)
+            if(!eng || !rus || !groups || !type){
                 throw new Error(NOT_ALL_DATA_PROVIDED)
             }
             const data = await prisma.word.create({
                 data: {
                     eng: ucFirst(eng),
                     rus: ucFirst(rus),
+                    type,
                     groups: {
                         connect: groups.map((el: number) => ({id: +el}))
                     }

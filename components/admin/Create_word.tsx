@@ -3,26 +3,23 @@ import { createFetch, deleteFetch } from 'lib/fetchesCRUD'
 import { useState } from 'react'
 import useSWRMutation from 'swr/mutation'
 import useSWR from 'swr'
-import { Group } from '@prisma/client'
-import { ucFirst } from 'lib/fns'
+import { Group, Word_Type } from '@prisma/client'
+import { WORD_TYPES } from 'lib/errors'
 
 export default function CreateWord(){
     const [eng, setEng] = useState<string>('')
     const [rus, setRus] = useState<string>('')
+    const [type, setType] = useState<string>()
     const [groups, setGroup_ids] = useState<number[]>([])
 
     const {data, error, isLoading} = useSWR<Group[]>(`/api/admin/groups`)
     const { trigger } = useSWRMutation(`/api/admin/words`, createFetch)
-    const { trigger: deleteTrigger } = useSWRMutation(`/api/admin/words`, deleteFetch)
 
     async function handler(){
-        await trigger({eng, rus, groups})
+        await trigger({eng, rus, groups, type})
         setEng('')
         setRus('')
         // setGroup_ids([])
-    }
-    function del(){
-        deleteTrigger({})
     }
     function handlerGroup_ids(i: number){
         if(groups.includes(i)){
@@ -43,14 +40,26 @@ export default function CreateWord(){
                     {/* <Label htmlFor='rus'>Rus</Label> */}
                     <TextInput id='rus' value={rus} onChange={( { target: {value} }) => setRus(value)} placeholder="Русский"/>
                 </div>
-                <div className='col-span-2'>
+                <div className='col-span-2 flex justify-end'>
                     {/* Добавь на enter */}
                     <Button onClick={handler}>
                         Создать
                     </Button>
                 </div>
             </div>
-            <h4 className='mt-4 mb-2'>Включить его в группы</h4>
+            <div className='col-span-12 mt-4 mb-2'>
+                <h4 className=''>Тип слова</h4>
+            </div>
+            <div className="col-span-12">
+                <select value={type} defaultValue={WORD_TYPES[0]} onChange={({target : {value}})=>setType(value)} className='w-full border border-gray-200 rounded-lg'>
+                    {WORD_TYPES.map((el, i) => {
+                        return <option key={i}>{el}</option>
+                    })}
+                </select>
+            </div>
+            <div className='col-span-12 mt-4 mb-2'>
+                <h4 className=''>Включить в группы:</h4>
+            </div>
             <div className="grid grid-cols-12 border border-gray-200 rounded-lg py-4 gap-4">
                 {isLoading && <Spinner size='xl' />}
                 {!isLoading && data && data.map((el, i) => {

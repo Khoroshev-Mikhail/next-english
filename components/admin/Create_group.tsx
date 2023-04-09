@@ -13,7 +13,9 @@ export default function CreateGroup(){
     }
     return(
         <div className='p-4 border-2 rounded-lg mb-4'>
-            <h4 className='mb-2'>Создать новую группу слов</h4>
+        <div className='col-span-12 mt-4 mb-2'>
+            <h4 className=''>Создать новую группу слов</h4>
+        </div>
             <div className="grid grid-cols-12 gap-x-4">
                 <div className='col-span-5'>
                     {/* <Label htmlFor='eng'>Eng</Label> */}

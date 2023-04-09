@@ -65,14 +65,14 @@ enum Word_Type {
   NOUN
   VERB
   ADJECTIVE //Прилагательные
-  AVERB //Наречие
+  ADVERB //Наречие
   PRONOUN //Местоимения
-  NUMERALS //Числительные: one, first и др.
+  NUMERAL //Числительные: one, first и др.
   ARTICLE
   PREPOSITION //Предлоги
   CONJUNCTION //Союзы
-  IRREGULAR_VERBS
-  PHRASAL_VERBS //Фразовые глаголы
+  IRREGULAR_VERB
+  PHRASAL_VERB //Фразовые глаголы
 }
 model Word{
   id            Int @id @default(autoincrement())

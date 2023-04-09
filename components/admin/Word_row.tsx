@@ -2,13 +2,15 @@ import { Checkbox, Label, Spinner, TextInput } from 'flowbite-react'
 import { useEffect, useState } from 'react'
 import useSWRMutation from 'swr/mutation'
 import useSWR from 'swr'
-import { Group, Word } from '@prisma/client'
+import { Group, Word, Word_Type } from '@prisma/client'
 import { deleteFetch, updateFetch } from 'lib/fetchesCRUD'
+import { WORD_TYPES } from 'lib/errors'
 
-export default function Word_row(props : { id: number, eng: string, rus: string, groups: {id: number}[] }){
+export default function Word_row(props : { id: number, eng: string, rus: string, groups: {id: number}[], type: Word_Type }){
     const [ isUpdating, setUpdating ] = useState<boolean>(false)
     const [ eng, setEng ] = useState<string>(props.eng)
     const [ rus, setRus ] = useState<string>(props.rus)
+    const [type, setType] = useState<string>(props.type)
     const [ groups, setGroup_ids ] = useState<number[]>(props.groups.map(el => el.id))
 
     const { data,  isLoading: isLoadingGroups } = useSWR<Group[]>(`/api/admin/groups`)
@@ -48,18 +50,12 @@ export default function Word_row(props : { id: number, eng: string, rus: string,
                 <div className='col-span-1 py-4'>{props.id}</div>
                 <div className='col-span-5 py-4'>{props.eng}</div>
                 <div className='col-span-4 py-4'>{props.rus}</div>
-                <div className='col-span-2 py-3'>
+                <div className='col-span-2 py-3 flex justify-end'>
                     <button 
                         onClick={()=>setUpdating(true)}
                         className='w-32 h-10 bg-transparent hover:bg-sky-100 border-solid  duration-500 hover:duration-500 border-2 text-lg font-medium rounded-md outline-none ml-10'
                     >
                         Обновить
-                    </button>
-                    <button 
-                        onClick={()=>del()}
-                        className='w-32 h-10 bg-transparent hover:bg-sky-100 border-solid  duration-500 hover:duration-500 border-2 text-lg font-medium rounded-md outline-none ml-10'
-                    >
-                        Удалить
                     </button>
                 </div>
             </div>
@@ -67,13 +63,13 @@ export default function Word_row(props : { id: number, eng: string, rus: string,
         {isUpdating && 
             <div className="col-span-12 grid grid-cols-12 border-b-2 pb-2">
                 <div className='col-span-1 py-4'>{props.id}</div>
-                <div className='col-span-5 py-4 pr-2'>
+                <div className='col-span-5 py-3 pr-2'>
                     <TextInput value={eng} onChange={(e)=>setEng(e.target.value)}/>
                 </div>
-                <div className='col-span-4 py-4 pr-2'>
+                <div className='col-span-4 py-3 pr-2'>
                     <TextInput value={rus} onChange={(e)=>setRus(e.target.value)}/>
                 </div>
-                <div className='col-span-2 py-3'>
+                <div className='col-span-2 py-3 flex justify-end'>
                     <button 
                         onClick={()=>handler()}
                         className='w-32 h-10 bg-transparent hover:bg-sky-100 border-solid duration-500 hover:duration-500 border-2 text-lg font-medium rounded-md outline-none ml-10'
@@ -81,7 +77,20 @@ export default function Word_row(props : { id: number, eng: string, rus: string,
                         Сохранить
                     </button>
                 </div>
-                <div className="col-span-12 grid grid-cols-12 border border-gray-200 rounded-lg py-4  gap-4">
+                <div className='col-span-12 mt-4 mb-2'>
+                    <h4 className=''>Тип слова:</h4>
+                </div>
+                <div className='col-span-12 mb-4'>
+                    <select value={type} defaultValue={WORD_TYPES[0]} onChange={({target : {value}})=>setType(value)} className='w-full border border-gray-200 rounded-lg'>
+                        {WORD_TYPES.map((el, i) => {
+                            return <option key={i}>{el}</option>
+                        })}
+                    </select>
+                </div>
+                <div className='col-span-12 mt-4 mb-2'>
+                    <h4 className=''>Входит в группы:</h4>
+                </div>
+                <div className="col-span-12 grid grid-cols-12 border border-gray-200 rounded-lg py-4 gap-4">
                     {isLoadingGroups && <Spinner size='xl' />}
                     {!isLoadingGroups && data && data.map((el, i) => {
                         return (
@@ -91,6 +100,14 @@ export default function Word_row(props : { id: number, eng: string, rus: string,
                             </div>
                         )
                     })}
+                </div>
+                <div className="col-span-12 pt-2 flex justify-end">
+                    <button 
+                        onClick={()=>del()}
+                        className='w-32 h-10 bg-red-500 hover:bg-sky-100 border-solid  duration-500 hover:duration-500 border-2 text-lg font-medium rounded-md outline-none'
+                    >
+                        Удалить
+                    </button>
                 </div>
             </div>
         }

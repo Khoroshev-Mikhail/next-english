@@ -70,10 +70,10 @@ export default function Group_row(props : { id: number, eng: string, rus: string
         {isUpdating && 
             <div className="col-span-12 grid grid-cols-12 border-b-2 pb-2">
                 <div className='col-span-1 py-4'>{props.id}</div>
-                <div className='col-span-5 py-4 pr-2'>
+                <div className='col-span-5 py-3 pr-2'>
                     <TextInput value={eng} onChange={(e)=>setEng(e.target.value)}/>
                 </div>
-                <div className='col-span-4 py-4 pr-2'>
+                <div className='col-span-4 py-3 pr-2'>
                     <TextInput value={rus} onChange={(e)=>setRus(e.target.value)}/>
                 </div>
                 <div className='col-span-2 py-3'>

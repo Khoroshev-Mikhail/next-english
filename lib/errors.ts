@@ -1,3 +1,5 @@
+import { Word_Type } from "@prisma/client"
+
 //Ошибки
 export const ACCESS_IS_DENIED = 'Доступ запрещен.'
 export const UNAUTHPRIZED = 'Не авторизован.'
@@ -15,6 +17,7 @@ export const METHODS: MethodLearn[] = [ENGLISH, RUSSIAN, SPELLING, AUDING, SPEAK
 export const DELAY = 600
 export const BG_SUCCESS = 'bg-green-400'
 export const BG_ERROR = 'bg-red-400'
+export const WORD_TYPES: Word_Type[] = ['NOUN', 'VERB', 'ADJECTIVE', 'ADVERB', 'PRONOUN', 'NUMERAL', 'ARTICLE', 'PREPOSITION', 'CONJUNCTION', 'IRREGULAR_VERB', 'PHRASAL_VERB' ]
 
 
 //Типы
