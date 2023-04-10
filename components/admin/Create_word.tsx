@@ -15,7 +15,8 @@ export default function CreateWord(){
     const {data, error, isLoading} = useSWR<Group[]>(`/api/admin/groups`)
     const { trigger } = useSWRMutation(`/api/admin/words`, createFetch)
 
-    async function handler(){
+    async function handler(){   
+        console.log('ara')
         await trigger({eng, rus, groups, type})
         setEng('')
         setRus('')
@@ -51,7 +52,7 @@ export default function CreateWord(){
                 <h4 className=''>Тип слова</h4>
             </div>
             <div className="col-span-12">
-                <select value={type} defaultValue={WORD_TYPES[0]} onChange={({target : {value}})=>setType(value)} className='w-full border border-gray-200 rounded-lg'>
+                <select value={type} defaultValue={WORD_TYPES[0]} onChange={(e)=>setType(e.target.value)} className='w-full border border-gray-200 rounded-lg'>
                     {WORD_TYPES.map((el, i) => {
                         return <option key={i}>{el}</option>
                     })}
