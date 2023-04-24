@@ -16,7 +16,7 @@ export default function Group_card({ id, eng, rus, _count } : { id: number, eng:
     //     console.log(data)
     // },[data])
     return (
-        <div data-aos="flip-right" className="p-2 block truncate col-span-6 sm:col-span-6 md:col-span-4 lg:col-span-4 xl:col-span-3 rounded-xl border-2 border-gray grid grid-cols-6 text-center shadow-md">
+        <div data-aos="fade-up" data-aos-duration="1000" className="p-2 block truncate col-span-6 sm:col-span-6 md:col-span-4 lg:col-span-4 xl:col-span-3 rounded-xl border-2 border-gray grid grid-cols-6 text-center shadow-md">
             <h3 className="col-span-6 text-md sm:text-xl md:text-2xl font-extrabold mx-4 py-4 border-b-2 truncate h-[56px]">
                 <Link href={`/groups/${id}`}>
                     {eng}

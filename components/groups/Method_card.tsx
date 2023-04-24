@@ -23,7 +23,7 @@ export default function Method_card({ method, header } : { method: string, heade
         AOS.init()
     }, [])
     return (
-        <div data-aos="flip-right" className={`block truncate col-span-12 sm:col-span-6 md:col-span-6 lg:col-span-4 xl:col-span-3 rounded-xl border-2 border-gray grid grid-cols-6 text-center shadow-md`}>
+        <div data-aos="fade-up" data-aos-duration="1000" className={`block truncate col-span-12 sm:col-span-6 md:col-span-6 lg:col-span-4 xl:col-span-3 rounded-xl border-2 border-gray grid grid-cols-6 text-center shadow-md`}>
             <h3 className="col-span-6 text-md sm:text-xl md:text-xl 2xl:text-2xl font-extrabold mx-4 py-4 truncate h-[56px]">
                 <Link href={`${id}/${method}`} className={isCompleted() ? 'pointer-events-none' : ''} >
                     { header }
