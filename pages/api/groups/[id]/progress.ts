@@ -5,6 +5,7 @@ import prisma from '../../../../lib/prisma';
 import { authOptions } from '../../auth/[...nextauth]';
 
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
+    //Переписать так: Получай массив всех слов юзера, получай все слова группы и на клиенте уже сравнивай (все кэшируется swr хуком)
     try{
         const session = await getServerSession(req, res, authOptions)
         if(!session?.user.id){
