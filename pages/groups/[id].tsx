@@ -1,13 +1,30 @@
 import { Group } from '@prisma/client'
 import Method_card from 'components/groups/Method_card'
 import { Spinner } from 'flowbite-react'
+import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-export default function Group_Page(){
+export const getServerSideProps: GetStaticProps = async ({ params }) => {
+    const { eng } = await prisma.group.findUnique({
+        where: {
+            id: Number(params.id)
+        },
+        select: {
+            eng: true,
+        },
+    })
+    return {
+      props: {
+        fallbackData: eng
+      },
+    };
+}
+
+export default function Group_Page({ fallbackData }){
     const router = useRouter()
     const { id } = router.query
-    const {data, error, isLoading} = useSWR<Group>(id ? `/api/groups/${id}` : null)
+    const {data, error, isLoading} = useSWR<Group>(id ? `/api/groups/${id}` : null, { fallbackData })
     return(
         <div className="grid grid-cols-12 gap-4 p-4 rounded-lg">
             <div className='col-span-12'>

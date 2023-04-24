@@ -99,9 +99,10 @@ export default function Speaking(){
             }
             {!isLoading && data && data.length > 0 && 
             <>
-                <div className='flex justify-center'>
+                <div className='flex justify-center relative h-4'>
                     {/* сделать анимацию красный микрофон с исходящими кругами */}
-                    <Image src={isMicrophoneOn ? '/images/pause-circle.svg' : '/images/microphone.svg'} alt={isMicrophoneOn ? 'sound ON' : 'sound OFF'} onClick={()=>setIsMicrophoneOn(!isMicrophoneOn)} width={20} height={20} className="cursor-pointer"/>
+                    {isMicrophoneOn && <div className='absolute bg-red-500 w-5 h-5 rounded-xl animate-ping z-0'></div>}
+                    <Image src={'/images/microphone.svg'} alt={isMicrophoneOn ? 'sound ON' : 'sound OFF'} onClick={()=>setIsMicrophoneOn(!isMicrophoneOn)} width={20} height={20} className="absolute cursor-pointer z-100"/>
                 </div>
                 <div className='flex justify-center cursor-pointer' onClick={()=>speechText(data[i].eng)}>
                     <h3 className="text-center text-2xl font-extrabold p-2">
