@@ -11,24 +11,22 @@ export type Group = {
     _count: Prisma.GroupCountOutputType;
 }
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-    const res = await fetch(`https://next-english.vercel.app/api/groups`)
-    const groups = await res.json()
-    // const groups = await prisma.group.findMany({
-    //     where: {
-    //         visible: true
-    //     },
-    //     select: {
-    //         id: true,
-    //         eng: true,
-    //         rus: true,
-    //         words: {
-    //             select: {
-    //                 id: true
-    //             }
-    //         },
-    //         _count: true,
-    //     },
-    // })
+    const groups = await prisma.group.findMany({
+        where: {
+            visible: true
+        },
+        select: {
+            id: true,
+            eng: true,
+            rus: true,
+            words: {
+                select: {
+                    id: true
+                }
+            },
+            _count: true,
+        },
+    })
     return {
       props: {
         fallbackData: groups
