@@ -10,32 +10,9 @@ export type Group = {
     words: Word[];
     _count: Prisma.GroupCountOutputType;
 }
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-    const groups = await prisma.group.findMany({
-        where: {
-            visible: true
-        },
-        select: {
-            id: true,
-            eng: true,
-            rus: true,
-            words: {
-                select: {
-                    id: true
-                }
-            },
-            _count: true,
-        },
-    })
-    return {
-      props: {
-        fallbackData: groups
-      },
-      revalidate: 10
-    };
-}
-export default function Groups({ fallbackData }){
-    const { data, error, isLoading } = useSWR<Group[]>(`/api/groups`, { fallbackData })
+
+export default function Groups(){
+    const { data, error, isLoading } = useSWR<Group[]>(`/api/groups`)
     return(
         <div className="grid grid-cols-12 gap-2 sm:gap-4 px-2">
             {!error && data && data?.map((el, i) =>{
