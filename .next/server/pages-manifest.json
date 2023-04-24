@@ -1,9 +1,0 @@
-{
-  "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js",
-  "/groups": "pages/groups.js",
-  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/api/groups/[id]/progress": "pages/api/groups/[id]/progress.js",
-  "/api/groups": "pages/api/groups.js"
-}
