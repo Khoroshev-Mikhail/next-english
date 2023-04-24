@@ -5,26 +5,10 @@ import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-export const getServerSideProps: GetStaticProps = async ({ params }) => {
-    const { eng } = await prisma.group.findUnique({
-        where: {
-            id: Number(params.id)
-        },
-        select: {
-            eng: true,
-        },
-    })
-    return {
-      props: {
-        fallbackData: eng
-      },
-    };
-}
-
-export default function Group_Page({ fallbackData }){
+export default function Group_Page(){
     const router = useRouter()
     const { id } = router.query
-    const {data, error, isLoading} = useSWR<Group>(id ? `/api/groups/${id}` : null, { fallbackData })
+    const {data, error, isLoading} = useSWR<Group>(id ? `/api/groups/${id}` : null)
     return(
         <div className="grid grid-cols-12 gap-4 p-4 rounded-lg">
             <div className='col-span-12'>
