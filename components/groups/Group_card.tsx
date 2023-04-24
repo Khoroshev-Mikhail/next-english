@@ -5,12 +5,16 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
-import { GetStaticProps } from "next";
+import { Group } from "@/pages/groups";
 
 
-export default function Group_card({ id, eng, rus, _count } : { id: number, eng: string, rus: string, _count: { words: number} }){
-    const { data } = useSWR(id ? `/api/groups/${id}/progress` : null)
+export default function Group_card({ id, eng, rus, words, _count }: Group){
     const { data: session } = useSession()
+    const { data } = useSWR(id ? `/api/groups/${id}/progress` : null)
+    const { data: english } = useSWR(`/api/user/vocabulary/english/`)
+    const { data: russian } = useSWR(`/api/user/vocabulary/russian/`)
+    const { data: auding } = useSWR(`/api/user/vocabulary/auding/`)
+    const { data: speaking } = useSWR(`/api/user/vocabulary/speaking/`)
     useEffect(()=>{
         AOS.init()
     }, [])
@@ -25,10 +29,10 @@ export default function Group_card({ id, eng, rus, _count } : { id: number, eng:
                 (data 
                     ?
                         <div className="col-span-6 p-2 text-center truncate text-xs sm:text-sm md:text-base">
-                            <Progress progress={data?.english || 0} label="Перевод с Английского" labelPosition="outside"></Progress>
-                            <Progress progress={data?.russian || 0} label="Перевод с Русского" labelPosition="outside"></Progress>
-                            <Progress progress={data?.auding || 0} label="Аудирование" labelPosition="outside"></Progress>
-                            <Progress progress={data?.speaking || 0} label="Произношение" labelPosition="outside"></Progress>
+                            <Progress progress={words.filter(el => english?.includes(el.id)).length || 0} label="Перевод с Английского" labelPosition="outside"></Progress>
+                            <Progress progress={words.filter(el => russian?.includes(el.id)).length || 0} label="Перевод с Русского" labelPosition="outside"></Progress>
+                            <Progress progress={words.filter(el => auding?.includes(el.id)).length || 0} label="Аудирование" labelPosition="outside"></Progress>
+                            <Progress progress={words.filter(el => speaking?.includes(el.id)).length || 0} label="Произношение" labelPosition="outside"></Progress>
                         </div>
                     :
                         <div className="col-span-6 p-2 text-center h-[168px] flex flex-col justify-center">

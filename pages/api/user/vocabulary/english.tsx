@@ -12,15 +12,19 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         }
         
         if(req.method === "GET"){
-            const data = await prisma.user.findUnique({
+            const { english } = await prisma.user.findUnique({
                 where: {
                     id: String(session.user.id)  
                 },
                 select: {
-                    english: true,
+                    english: {
+                        select: {
+                            id: true
+                        }
+                    },
                 }
             })
-            return res.status(200).json(data);
+            return res.status(200).json(english.map(el => el.id));
         }
 
         const { method, word_id } : { method: 'ENGLISH', word_id: number } = JSON.parse(req.body)
